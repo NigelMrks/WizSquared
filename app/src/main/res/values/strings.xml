@@ -1,3 +1,160 @@
 <resources>
-    <string name="app_name">WizSquared</string>
+    <string name="app_name">Wiz\u00B2</string>
+    <string name="step_1_9">Step 1/9</string>
+    <string name="select_race">Select Race</string>
+
+    <string-array name="races_selection_spinner">
+        <item>Choose</item>
+        <item>Dragonborn</item>
+        <item>Dwarf</item>
+        <item>Elf</item>
+        <item>Gnome</item>
+        <item>Half-Elf</item>
+        <item>Half-Orc</item>
+        <item>Halfling</item>
+        <item>Human</item>
+        <item>Tiefling</item>
+        <item>Custom</item>
+    </string-array>
+
+    <string-array name="skill_choices_barbarian">
+        <!--Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception,
+        and Survival-->
+        <item>Animal Handling</item>
+        <item>Athletics</item>
+        <item>Intimidation</item>
+        <item>Nature</item>
+        <item>Perception</item>
+        <item>Survival</item>
+    </string-array>
+    <string-array name="skill_choices_bard">
+        <!--Choose any three-->
+        <item>Acrobatics</item>
+        <item>Animal Handling</item>
+        <item>Arcana</item>
+        <item>Athletics</item>
+        <item>Deception</item>
+        <item>History</item>
+        <item>Insight</item>
+        <item>Intimidation</item>
+        <item>Investigation</item>
+        <item>Medicine</item>
+        <item>Nature</item>
+        <item>Perception</item>
+        <item>Performance</item>
+        <item>Persuasion</item>
+        <item>Religion</item>
+        <item>Sleight of Hand</item>
+        <item>Stealth</item>
+        <item>Survival</item>
+    </string-array>
+    <string-array name="skill_choices_cleric">
+        <!--Choose two from History, Insight, Medicine, Persuasion, and Religion-->
+        <item>History</item>
+        <item>Insight</item>
+        <item>Medicine</item>
+        <item>Persuasion</item>
+        <item>Religion</item>
+    </string-array>
+    <string-array name="skill_choices_druid">
+        <!--Choose two from Arcana, Animal Handling, Insight, Medicine, Nature, Perception,
+        Religion, and Survival-->
+        <item>Animal Handling</item>
+        <item>Arcana</item>
+        <item>Insight</item>
+        <item>Medicine</item>
+        <item>Nature</item>
+        <item>Perception</item>
+        <item>Religion</item>
+        <item>Survival</item>
+    </string-array>
+    <string-array name="skill_choices_fighter">
+        <!--Choose two skills from Acrobatics, Animal Handling, Athletics, History, Insight,
+        Intimidation, Perception, and Survival-->
+        <item>Acrobatics</item>
+        <item>Animal Handling</item>
+        <item>Athletics</item>
+        <item>History</item>
+        <item>Insight</item>
+        <item>Intimidation</item>
+        <item>Perception</item>
+        <item>Survival</item>
+    </string-array>
+    <string-array name="skill_choices_monk">
+        <!--Choose two from Acrobatics, Athletics, History, Insight, Religion, and Stealth-->
+        <item>Acrobatics</item>
+        <item>Athletics</item>
+        <item>History</item>
+        <item>Insight</item>
+        <item>Religion</item>
+        <item>Stealth</item>
+    </string-array>
+    <string-array name="skill_choices_paladin">
+        <!--Choose two from Athletics, Insight, Intimidation, Medicine, Persuasion, and Religion-->
+        <item>Athletics</item>
+        <item>Insight</item>
+        <item>Intimidation</item>>
+        <item>Medicine</item>
+        <item>Persuasion</item>
+        <item>Religion</item>
+    </string-array>
+    <string-array name="skill_choices_ranger">
+        <!--Choose three from Animal Handling, Athletics, Insight, Investigation, Nature,
+        Perception, Stealth, and Survival-->
+        <item>Animal Handling</item>
+        <item>Athletics</item>
+        <item>Insight</item>
+        <item>Investigation</item>
+        <item>Nature</item>
+        <item>Perception</item>
+        <item>Stealth</item>
+        <item>Survival</item>
+    </string-array>
+    <string-array name="skill_choices_rogue">
+        <!--Choose four from Acrobatics, Athletics, Deception, Insight, Intimidation,
+        Investigation, Perception, Performance, Persuasion, Sleight of Hand, and Stealth-->
+        <item>Acrobatics</item>
+        <item>Athletics</item>
+        <item>Deception</item>
+        <item>Insight</item>
+        <item>Intimidation</item>
+        <item>Investigation</item>
+        <item>Perception</item>
+        <item>Performance</item>
+        <item>Persuasion</item>
+        <item>Sleight of Hand</item>
+        <item>Stealth</item>
+    </string-array>
+    <string-array name="skill_choices_sorcerer">
+        <!--Choose two from Arcana, Deception, Insight, Intimidation, Persuasion, and Religion-->
+        <item>Arcana</item>
+        <item>Deception</item>
+        <item>Insight</item>
+        <item>Intimidation</item>
+        <item>Persuasion</item>
+        <item>Religion</item>
+    </string-array>
+    <string-array name="skill_choices_warlock">
+        <!--Choose two from Arcana, Deception, History, Intimidation, Investigation, Nature,
+         and Religion-->
+        <item>Arcana</item>
+        <item>Deception</item>
+        <item>History</item>
+        <item>Intimidation</item>
+        <item>Investigation</item>
+        <item>Nature</item>
+        <item>Religion</item>
+    </string-array>
+    <string-array name="skill_choices_wizard">
+        <!--Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion-->
+        <item>Arcana</item>
+        <item>History</item>
+        <item>Insight</item>
+        <item>Investigation</item>
+        <item>Medicine</item>
+        <item>Religion</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

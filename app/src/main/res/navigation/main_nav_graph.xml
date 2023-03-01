@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/characterList">
 
+    <fragment
+        android:id="@+id/characterList"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterList"
+        android:label="fragment_character_list"
+        tools:layout="@layout/fragment_character_list" >
+        <action
+            android:id="@+id/action_character_list_to_characterCreationStepOne"
+            app:destination="@id/characterCreationStepOne" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterCreationStepOne"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepOne"
+        android:label="fragment_character_creation_step_one"
+        tools:layout="@layout/fragment_character_creation_step_one" />
 </navigation>
