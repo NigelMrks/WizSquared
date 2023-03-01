@@ -11,7 +11,6 @@ import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepOneBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -19,7 +18,7 @@ import kotlin.collections.ArrayList
  * Use the [CharacterList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CharacterCreationStepOne : Fragment() {
+class CharacterCreation : Fragment() {
 
     private var _binding: FragmentCharacterCreationStepOneBinding? = null
     private val binding get() = _binding!!

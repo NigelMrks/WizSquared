@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/characterCreationStepOne"
-        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepOne"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreation"
         android:label="fragment_character_creation_step_one"
         tools:layout="@layout/fragment_character_creation_step_one" />
 </navigation>
