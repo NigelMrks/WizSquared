@@ -1,11 +1,11 @@
 package com.nigel.marks.wizsquared.data
 
-import com.nigel.marks.wizsquared.data.model.RaceSelector
+import com.nigel.marks.wizsquared.data.model.SelectorBox
 
 class Repository {
 
-    var raceNoneSelected: List<RaceSelector> = listOf(
-        RaceSelector(
+    var raceNoneSelected: List<SelectorBox> = listOf(
+        SelectorBox(
             "Racial Traits",
             false,
             listOf(),
@@ -15,7 +15,7 @@ class Repository {
                         "of that race. The following entries appear among the Traits of most races."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Ability Score Increase",
             false,
             listOf(),
@@ -24,7 +24,7 @@ class Repository {
                 "Every race increases one or more of a character’s Ability Scores."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Age",
             false,
             listOf(),
@@ -40,7 +40,7 @@ class Repository {
                         "Intelligence or Wisdom."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Alignment",
             false,
             listOf(),
@@ -52,7 +52,7 @@ class Repository {
                         "help you better define your character."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Size",
             false,
             listOf(),
@@ -65,7 +65,7 @@ class Repository {
                         "Characters have trouble Wielding heavy Weapons, as explained in “Equipment.”"
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Speed",
             false,
             listOf(),
@@ -75,7 +75,7 @@ class Repository {
                         "Fighting (“Combat”)."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Languages",
             false,
             listOf(),
@@ -84,7 +84,7 @@ class Repository {
                 "By virtue of your race, your character can speak, read, and write certain Languages."
             )
         ),
-        RaceSelector(
+        SelectorBox(
             "Subraces",
             false,
             listOf(),

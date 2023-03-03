@@ -1,7 +1,7 @@
 package com.nigel.marks.wizsquared.data.model
 
-data class RaceSelector(
-    val Title: String,
+data class SelectorBox(
+    val title: String,
     val hasChoice: Boolean,
     val choices: List<String>,
     val hasMultipleDesc: Boolean,
