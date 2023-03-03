@@ -9,6 +9,7 @@
         android:id="@+id/selector_box"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/primary_dark"
         app:cardCornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -65,12 +66,10 @@
                 android:id="@+id/selector_spinner_dropdown"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/selector_desc"
+                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/selector_title"
+                app:layout_constraintTop_toTopOf="@+id/selector_spinner"
                 app:srcCompat="@drawable/baseline_arrow_drop_down_24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

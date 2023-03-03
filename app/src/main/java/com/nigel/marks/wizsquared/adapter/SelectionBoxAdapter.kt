@@ -21,6 +21,7 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
 
                 if (selectorBox.hasChoice) {
                     binding.selectorSpinner.visibility = View.VISIBLE
+                    binding.selectorSpinnerDropdown.visibility = View.VISIBLE
                     val selectorArrayAdapter = ArrayAdapter<Any?>(
                         context,
                         R.layout.spinner_list,
@@ -30,14 +31,32 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                 }
                 else {
                     binding.selectorSpinner.visibility = View.GONE
+                    binding.selectorSpinnerDropdown.visibility = View.GONE
                 }
 
                 if (selectorBox.hasMultipleDesc) {
-                    binding.selectorDesc.text =
-                        selectorBox.descriptions[selectorBox.choices.indexOf(
-                            binding.selectorSpinner.selectedItem.toString())]
+                    binding.selectorSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parentView: AdapterView<*>?,
+                            selectedItemView: View?,
+                            position: Int,
+                            id: Long
+                        ) {
+                            // your code here
+                            binding.selectorDesc.text =
+                                selectorBox.descriptions[selectorBox.choices.indexOf(
+                                    binding.selectorSpinner.selectedItem.toString())]
+                        }
+
+                        override fun onNothingSelected(parentView: AdapterView<*>?) {
+                            // your code here
+                        }
+                    }
                 }
                 else binding.selectorDesc.text = selectorBox.descriptions[0]
+
+                if (selectorBox.hasDesc) binding.selectorDesc.visibility = View.VISIBLE
+                else binding.selectorDesc.visibility = View.GONE
             }
         }
 

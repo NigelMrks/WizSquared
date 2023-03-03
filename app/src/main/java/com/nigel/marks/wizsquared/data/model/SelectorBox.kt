@@ -5,5 +5,6 @@ data class SelectorBox(
     val hasChoice: Boolean,
     val choices: List<String>,
     val hasMultipleDesc: Boolean,
-    val descriptions: List<String>
+    val descriptions: List<String>,
+    val hasDesc: Boolean = true
 )

@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
+import com.nigel.marks.wizsquared.adapter.SelectionBoxAdapter
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepOneBinding
 import java.util.*
 
@@ -40,6 +43,41 @@ class CharacterCreation : Fragment() {
         )
         //racesArrayAdapter.setDropDownViewResource(R.layout.spinner_list)
         binding.ccStepOneRaceSpinner.adapter = racesArrayAdapter
+
+        binding.selectorBoxRecycler.layoutManager = LinearLayoutManager(requireContext())
+        var adapter = SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
+        binding.selectorBoxRecycler.adapter = adapter
+
+        binding.ccStepOneRaceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                adapter = when (binding.ccStepOneRaceSpinner.selectedItem.toString()) {
+                    "Choose" -> {
+                        SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
+                    }
+                    "Dragonborn" -> {
+                        SelectionBoxAdapter(viewModel.repository.raceDragonborn, requireContext())
+                    }
+                    "Dwarf" -> {
+                        SelectionBoxAdapter(viewModel.repository.raceDwarf, requireContext())
+                    }
+                    else -> {
+                        SelectionBoxAdapter(listOf(), requireContext())
+                    }
+                }
+                binding.selectorBoxRecycler.adapter = adapter
+                adapter.notifyDataSetChanged()
+
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                // your code here
+            }
+        }
 
         return view
     }
