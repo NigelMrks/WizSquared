@@ -5,4 +5,5 @@ import com.nigel.marks.wizsquared.data.Repository
 
 class MainViewModel : ViewModel() {
     val repository = Repository()
+
 }

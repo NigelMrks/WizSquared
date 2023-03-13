@@ -1,7 +1,20 @@
 <resources>
     <string name="app_name">Wiz\u00B2</string>
-    <string name="step_1_9">Step 1/9</string>
+
+    <string-array name="cc_steps">
+        <item>Step 1/9</item>
+        <item>Step 2/9</item>
+        <item>Step 3/9</item>
+        <item>Step 4/9</item>
+        <item>Step 5/9</item>
+        <item>Step 6/9</item>
+        <item>Step 7/9</item>
+        <item>Step 8/9</item>
+        <item>Step 9/9</item>
+    </string-array>
+
     <string name="select_race">Select Race</string>
+    <string name="select_class">Select Class</string>
 
     <string-array name="races_selection_spinner">
         <item>Choose</item>
@@ -15,6 +28,22 @@
         <item>Human</item>
         <item>Tiefling</item>
         <item>Custom</item>
+    </string-array>
+
+    <string-array name="classes_selection_spinner">
+        <item>Choose</item>
+        <item>Barbarian</item>
+        <item>Bard</item>
+        <item>Cleric</item>
+        <item>Druid</item>
+        <item>Fighter</item>
+        <item>Monk</item>
+        <item>Paladin</item>
+        <item>Ranger</item>
+        <item>Rogue</item>
+        <item>Sorcerer</item>
+        <item>Warlock</item>
+        <item>Wizard</item>
     </string-array>
 
     <string-array name="skill_choices_barbarian">
@@ -154,6 +183,7 @@
         <item>Medicine</item>
         <item>Religion</item>
     </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

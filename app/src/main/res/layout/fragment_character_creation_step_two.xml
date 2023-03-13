@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_gray"
-    tools:context=".ui.CharacterCreationStepOne">
+    tools:context=".ui.CharacterCreationStepTwo">
 
     <TextView
-        android:id="@+id/cc_step_one_step_count"
+        android:id="@+id/cc_step_two_step_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -22,17 +22,17 @@
         tools:text="Step X/9" />
 
     <TextView
-        android:id="@+id/cc_step_one_title_text"
+        android:id="@+id/cc_step_two_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/select_race"
+        android:text="@string/select_class"
         android:textColor="@color/text_beige"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/cc_step_one_step_count"
-        app:layout_constraintStart_toStartOf="@+id/cc_step_one_step_count"
-        app:layout_constraintTop_toBottomOf="@+id/cc_step_one_step_count" />
+        app:layout_constraintEnd_toEndOf="@+id/cc_step_two_step_count"
+        app:layout_constraintStart_toStartOf="@+id/cc_step_two_step_count"
+        app:layout_constraintTop_toBottomOf="@+id/cc_step_two_step_count" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
@@ -45,7 +45,7 @@
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cc_step_one_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/cc_step_two_title_text"
         app:strokeColor="@color/primary_light"
         app:strokeWidth="2dp">
 
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content">
 
             <Spinner
-                android:id="@+id/cc_step_one_race_spinner"
+                android:id="@+id/cc_step_two_class_spinner"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
@@ -64,33 +64,33 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/choose_race_text" />
+                app:layout_constraintTop_toBottomOf="@+id/choose_class_text" />
 
             <TextView
-                android:id="@+id/choose_race_text"
+                android:id="@+id/choose_class_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Choose a Race:"
+                android:text="Choose a Class:"
                 android:textColor="@color/text_beige"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/cc_step_one_spinner_dropdown"
+                android:id="@+id/cc_step_two_spinner_dropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
                 android:src="@drawable/baseline_arrow_drop_down_24"
-                app:layout_constraintBottom_toBottomOf="@+id/cc_step_one_race_spinner"
+                app:layout_constraintBottom_toBottomOf="@+id/cc_step_two_class_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cc_step_one_race_spinner" />
+                app:layout_constraintTop_toTopOf="@+id/cc_step_two_class_spinner" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/cc_step_one_next_button"
+        android:id="@+id/cc_step_two_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -100,28 +100,28 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/cc_step_one_back_button"
+        android:id="@+id/cc_step_two_back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
         android:text="back"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/cc_step_one_cancel_button"
+        android:id="@+id/cc_step_two_cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/cc_step_one_next_button"
-        app:layout_constraintEnd_toStartOf="@+id/cc_step_one_next_button"
-        app:layout_constraintStart_toEndOf="@+id/cc_step_one_back_button"
-        app:layout_constraintTop_toTopOf="@+id/cc_step_one_next_button" />
+        app:layout_constraintBottom_toBottomOf="@+id/cc_step_two_next_button"
+        app:layout_constraintEnd_toStartOf="@+id/cc_step_two_next_button"
+        app:layout_constraintStart_toEndOf="@+id/cc_step_two_back_button"
+        app:layout_constraintTop_toTopOf="@+id/cc_step_two_next_button" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/selector_box_recycler"
+        android:id="@+id/selector_box_recycler_step_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
@@ -129,7 +129,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/cc_step_one_cancel_button"
+        app:layout_constraintBottom_toTopOf="@+id/cc_step_two_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView"

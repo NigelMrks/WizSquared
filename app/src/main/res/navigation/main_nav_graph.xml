@@ -16,7 +16,19 @@
     </fragment>
     <fragment
         android:id="@+id/characterCreationStepOne"
-        android:name="com.nigel.marks.wizsquared.ui.CharacterCreation"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepOne"
         android:label="fragment_character_creation_step_one"
-        tools:layout="@layout/fragment_character_creation_step_one" />
+        tools:layout="@layout/fragment_character_creation_step_one">
+        <action
+            android:id="@+id/action_characterCreationStepOne_to_characterList"
+            app:destination="@id/characterList" />
+        <action
+            android:id="@+id/action_characterCreationStepOne_to_characterCreationStepTwo"
+            app:destination="@id/characterCreationStepTwo" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterCreationStepTwo"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepTwo"
+        android:label="fragment_character_creation_step_two"
+        tools:layout="@layout/fragment_character_creation_step_two" />
 </navigation>

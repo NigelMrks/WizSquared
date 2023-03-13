@@ -8,20 +8,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
 import com.nigel.marks.wizsquared.adapter.SelectionBoxAdapter
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepOneBinding
-import java.util.*
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CharacterList.newInstance] factory method to
- * create an instance of this fragment.
- */
-class CharacterCreation : Fragment() {
+class CharacterCreationStepOne : Fragment() {
 
     private var _binding: FragmentCharacterCreationStepOneBinding? = null
     private val binding get() = _binding!!
@@ -35,19 +29,21 @@ class CharacterCreation : Fragment() {
         _binding = FragmentCharacterCreationStepOneBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //code goes here
-        val racesArrayAdapter = ArrayAdapter<Any?>(
+        //Set Number of Steps
+        binding.ccStepOneStepCount.text = resources.getStringArray(R.array.cc_steps)[0]
+
+        //Code for Spinner
+        //Create Adapter for Spinner with text layout and List to use
+        binding.ccStepOneRaceSpinner.adapter = ArrayAdapter<Any?>(
             requireContext(),
             R.layout.spinner_list,
             resources.getStringArray(R.array.races_selection_spinner)
         )
-        //racesArrayAdapter.setDropDownViewResource(R.layout.spinner_list)
-        binding.ccStepOneRaceSpinner.adapter = racesArrayAdapter
-
+        //Apply Adapter to Spinner
         binding.selectorBoxRecycler.layoutManager = LinearLayoutManager(requireContext())
         var adapter = SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
         binding.selectorBoxRecycler.adapter = adapter
-
+        //OnItemSelectedListener: Change Shown Objects on Selected Item in Spinner
         binding.ccStepOneRaceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?,
@@ -78,6 +74,17 @@ class CharacterCreation : Fragment() {
                 // your code here
             }
         }
+
+        //Navigation-Buttons
+        //Cancel Button
+        binding.ccStepOneCancelButton.setOnClickListener{
+            findNavController().navigate(CharacterCreationStepOneDirections.actionCharacterCreationStepOneToCharacterList())
+        }
+        //Next Button
+        binding.ccStepOneNextButton.setOnClickListener{
+            findNavController().navigate(CharacterCreationStepOneDirections.actionCharacterCreationStepOneToCharacterCreationStepTwo())
+        }
+
 
         return view
     }

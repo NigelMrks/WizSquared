@@ -23,6 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selector_desc" />
+
             <TextView
                 android:id="@+id/selector_title"
                 android:layout_width="wrap_content"
@@ -37,7 +47,7 @@
                 tools:text="Title" />
 
             <Spinner
-                android:id="@+id/selector_spinner"
+                android:id="@+id/selector_spinner_one"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
@@ -47,6 +57,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selector_title" />
 
+            <Spinner
+                android:id="@+id/selector_spinner_two"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selector_spinner_one" />
+
+            <Spinner
+                android:id="@+id/selector_spinner_three"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selector_spinner_two" />
+
+            <Spinner
+                android:id="@+id/selector_spinner_four"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selector_spinner_three" />
+
             <TextView
                 android:id="@+id/selector_desc"
                 android:layout_width="0dp"
@@ -54,23 +100,49 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
                 android:textColor="@color/text_beige"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/selector_spinner"
+                app:layout_constraintTop_toBottomOf="@+id/selector_spinner_four"
                 tools:text="description description description description description description description description description description description description description description description description description description description description description description description description description description description description description description " />
 
             <ImageView
-                android:id="@+id/selector_spinner_dropdown"
+                android:id="@+id/selector_spinner_dropdown_one"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner"
+                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner_one"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/selector_spinner"
+                app:layout_constraintTop_toTopOf="@+id/selector_spinner_one"
                 app:srcCompat="@drawable/baseline_arrow_drop_down_24" />
+            <ImageView
+                android:id="@+id/selector_spinner_dropdown_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner_two"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/selector_spinner_two"
+                app:srcCompat="@drawable/baseline_arrow_drop_down_24" />
+            <ImageView
+                android:id="@+id/selector_spinner_dropdown_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner_three"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/selector_spinner_three"
+                app:srcCompat="@drawable/baseline_arrow_drop_down_24" />
+            <ImageView
+                android:id="@+id/selector_spinner_dropdown_four"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/selector_spinner_four"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/selector_spinner_four"
+                app:srcCompat="@drawable/baseline_arrow_drop_down_24" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
