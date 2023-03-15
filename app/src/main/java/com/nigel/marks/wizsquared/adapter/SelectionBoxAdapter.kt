@@ -14,18 +14,24 @@ import com.nigel.marks.wizsquared.databinding.SelectorItemBinding
 class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Context)
     : RecyclerView.Adapter<SelectionBoxAdapter.SelectorBoxHolder>(){
 
-        inner class SelectorBoxHolder(val binding: SelectorItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        inner class SelectorBoxHolder(private val binding: SelectorItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
             fun bind(selectorBox: SelectorBox) {
                 binding.selectorTitle.text = selectorBox.title
 
-                //Set Spinners to previously selected Items
-                binding.selectorSpinnerOne.setSelection(selectorBox.selectionSave.selectionOne)
-                binding.selectorSpinnerTwo.setSelection(selectorBox.selectionSave.selectionTwo)
-                binding.selectorSpinnerThree.setSelection(selectorBox.selectionSave.selectionThree)
-                binding.selectorSpinnerFour.setSelection(selectorBox.selectionSave.selectionFour)
+                //Set ChoiceLists 2-4 to ChoiceList 1 if choicesAreSame == true
+                if (selectorBox.choicesAreSame) {
+                    when (selectorBox.numberOfChoices) {
+                        2 -> selectorBox.choicesTwo = selectorBox.choicesOne
+                        3 -> selectorBox.choicesThree = selectorBox.choicesOne
+                        4 -> selectorBox.choicesFour = selectorBox.choicesOne
+                    }
+                }
 
-                //Save selected Items on Spinners
+                //Set Initial Description
+                binding.selectorDesc.text = selectorBox.descriptions[0]
+
+                //Initialize onItemSelectedListeners
                 binding.selectorSpinnerOne.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
                         parent: AdapterView<*>?,
@@ -33,7 +39,15 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                         position: Int,
                         id: Long
                     ) {
-                        selectorBox.selectionSave.selectionOne = position
+                        itemSelected(1,selectorBox,position)
+                        //Set Description to selected Item
+                        if (selectorBox.hasDesc) {
+                            if (selectorBox.hasMultipleDesc) {
+                                binding.selectorDesc.text =
+                                    selectorBox.descriptions[selectorBox.choicesOne.indexOf(
+                                        binding.selectorSpinnerOne.selectedItem.toString())]
+                            }
+                        }
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -48,7 +62,7 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                         position: Int,
                         id: Long
                     ) {
-                        selectorBox.selectionSave.selectionTwo = position
+                        itemSelected(2,selectorBox,position)
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -63,7 +77,7 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                         position: Int,
                         id: Long
                     ) {
-                        selectorBox.selectionSave.selectionThree = position
+                        itemSelected(3,selectorBox,position)
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -78,22 +92,13 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                         position: Int,
                         id: Long
                     ) {
-                        selectorBox.selectionSave.selectionFour = position
+                        itemSelected(4,selectorBox,position)
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         TODO("Not yet implemented")
                     }
 
-                }
-
-                //Set ChoiceLists 2-4 to ChoiceList 1 if choicesAreSame == true
-                if (selectorBox.choicesAreSame) {
-                    when (selectorBox.numberOfChoices) {
-                        2 -> selectorBox.choicesTwo = selectorBox.choicesOne
-                        3 -> selectorBox.choicesThree = selectorBox.choicesOne
-                        4 -> selectorBox.choicesFour = selectorBox.choicesOne
-                    }
                 }
 
                 //If this SelectorBox has a Choice:
@@ -161,6 +166,7 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                         binding.selectorSpinnerDropdownFour.visibility = View.GONE
                     }
                 }
+
                 //Set View.GONE for all Spinners (no choices)
                 else {
                     binding.selectorSpinnerOne.visibility = View.GONE
@@ -173,49 +179,27 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                     binding.selectorSpinnerDropdownFour.visibility = View.GONE
                 }
 
-                //Set Description to selected Item
-                if (selectorBox.hasDesc) {
-                    if (selectorBox.hasMultipleDesc) {
-                        binding.selectorSpinnerOne.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onItemSelected(
-                                parentView: AdapterView<*>?,
-                                selectedItemView: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-                                binding.selectorDesc.text =
-                                    selectorBox.descriptions[selectorBox.choicesOne.indexOf(
-                                        binding.selectorSpinnerOne.selectedItem.toString())]
-                            }
-
-                            override fun onNothingSelected(parentView: AdapterView<*>?) {
-
-                            }
-                        }
-                    }
-                    else binding.selectorDesc.text = selectorBox.descriptions[0]
-                }
-
                 //If SelectorBox has Description set View.VISIBLE or View.GONE if it doesn't
                 if (selectorBox.hasDesc) binding.selectorDesc.visibility = View.VISIBLE
                 else binding.selectorDesc.visibility = View.GONE
 
-                //Logic for multiple Spinners with multiple choices of the same List
+                //Set Spinners to previously selected Items
+                binding.selectorSpinnerOne.setSelection(selectorBox.selectionSave.selectionOne)
+                binding.selectorSpinnerTwo.setSelection(selectorBox.selectionSave.selectionTwo)
+                binding.selectorSpinnerThree.setSelection(selectorBox.selectionSave.selectionThree)
+                binding.selectorSpinnerFour.setSelection(selectorBox.selectionSave.selectionFour)
+            }
 
-                if (selectorBox.choicesAreSame) {
-                    //Indexes of current selectedItem on all Spinners
-                    var spinnerOne = 0
-                    var spinnerTwo = 0
-                    var spinnerThree = 0
-                    var spinnerFour = 0
-                    //Spinner 1
-                    binding.selectorSpinnerOne.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
+            //Function for OnItemSelectedListener
+            fun itemSelected(currentSpinner: Int, selectorBox: SelectorBox, itemPosition: Int) {
+                var spinnerOne = selectorBox.selectionSave.selectionOne
+                var spinnerTwo = selectorBox.selectionSave.selectionTwo
+                var spinnerThree = selectorBox.selectionSave.selectionThree
+                var spinnerFour = selectorBox.selectionSave.selectionFour
+
+                when (currentSpinner) {
+                    1 -> {
+                        if (selectorBox.choicesAreSame) {
                             if (binding.selectorSpinnerOne.selectedItem.toString() != "Choose") {
                                 if (binding.selectorSpinnerOne.selectedItem == binding.selectorSpinnerTwo.selectedItem) {
                                     binding.selectorSpinnerTwo.setSelection(spinnerOne)
@@ -230,98 +214,66 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                                     spinnerFour = spinnerOne
                                 }
                             }
-                            spinnerOne = position
-                            selectorBox.selectionSave.selectionOne = position
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+                        spinnerOne = itemPosition
                     }
-                    //Spinner 2
-                    binding.selectorSpinnerTwo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if (binding.selectorSpinnerTwo.selectedItem.toString() != "Choose") {
-                                if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerOne.selectedItem) {
-                                    binding.selectorSpinnerOne.setSelection(spinnerTwo)
-                                    spinnerOne = spinnerTwo
-                                }
-                                if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerThree.selectedItem) {
-                                    binding.selectorSpinnerThree.setSelection(spinnerTwo)
-                                    spinnerThree = spinnerTwo
-                                }
-                                if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerFour.selectedItem) {
-                                    binding.selectorSpinnerFour.setSelection(spinnerTwo)
-                                    spinnerFour = spinnerTwo
-                                }
+                    2 -> {
+                        if (binding.selectorSpinnerTwo.selectedItem.toString() != "Choose") {
+                            if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerOne.selectedItem) {
+                                binding.selectorSpinnerOne.setSelection(spinnerTwo)
+                                spinnerOne = spinnerTwo
                             }
-                            spinnerTwo = position
+                            if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerThree.selectedItem) {
+                                binding.selectorSpinnerThree.setSelection(spinnerTwo)
+                                spinnerThree = spinnerTwo
+                            }
+                            if (binding.selectorSpinnerTwo.selectedItem == binding.selectorSpinnerFour.selectedItem) {
+                                binding.selectorSpinnerFour.setSelection(spinnerTwo)
+                                spinnerFour = spinnerTwo
+                            }
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+                        spinnerTwo = itemPosition
                     }
-                    //Spinner 3
-                    binding.selectorSpinnerThree.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if (binding.selectorSpinnerThree.selectedItem.toString() != "Choose") {
-                                if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerOne.selectedItem) {
-                                    binding.selectorSpinnerOne.setSelection(spinnerThree)
-                                    spinnerOne = spinnerThree
-                                }
-                                if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerTwo.selectedItem) {
-                                    binding.selectorSpinnerTwo.setSelection(spinnerThree)
-                                    spinnerTwo = spinnerThree
-                                }
-                                if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerFour.selectedItem) {
-                                    binding.selectorSpinnerFour.setSelection(spinnerThree)
-                                    spinnerFour = spinnerThree
-                                }
+                    3 -> {
+                        if (binding.selectorSpinnerThree.selectedItem.toString() != "Choose") {
+                            if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerOne.selectedItem) {
+                                binding.selectorSpinnerOne.setSelection(spinnerThree)
+                                spinnerOne = spinnerThree
                             }
-                            spinnerThree = position
+                            if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerTwo.selectedItem) {
+                                binding.selectorSpinnerTwo.setSelection(spinnerThree)
+                                spinnerTwo = spinnerThree
+                            }
+                            if (binding.selectorSpinnerThree.selectedItem == binding.selectorSpinnerFour.selectedItem) {
+                                binding.selectorSpinnerFour.setSelection(spinnerThree)
+                                spinnerFour = spinnerThree
+                            }
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+                        spinnerThree = itemPosition
                     }
-                    //Spinner 4
-                    binding.selectorSpinnerFour.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            if (binding.selectorSpinnerFour.selectedItem.toString() != "Choose") {
-                                if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerTwo.selectedItem) {
-                                    binding.selectorSpinnerTwo.setSelection(spinnerOne)
-                                    spinnerOne = spinnerFour
-                                }
-                                if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerThree.selectedItem) {
-                                    binding.selectorSpinnerThree.setSelection(spinnerOne)
-                                    spinnerTwo = spinnerFour
-                                }
-                                if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerOne.selectedItem) {
-                                    binding.selectorSpinnerOne.setSelection(spinnerOne)
-                                    spinnerThree = spinnerFour
-                                }
+                    4 -> {
+                        if (binding.selectorSpinnerFour.selectedItem.toString() != "Choose") {
+                            if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerTwo.selectedItem) {
+                                binding.selectorSpinnerTwo.setSelection(spinnerOne)
+                                spinnerOne = spinnerFour
                             }
-                            spinnerOne = position
+                            if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerThree.selectedItem) {
+                                binding.selectorSpinnerThree.setSelection(spinnerOne)
+                                spinnerTwo = spinnerFour
+                            }
+                            if (binding.selectorSpinnerFour.selectedItem == binding.selectorSpinnerOne.selectedItem) {
+                                binding.selectorSpinnerOne.setSelection(spinnerOne)
+                                spinnerThree = spinnerFour
+                            }
                         }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-
-                        }
+                        spinnerOne = itemPosition
                     }
                 }
+
+                selectorBox.selectionSave.selectionOne = spinnerOne
+                selectorBox.selectionSave.selectionTwo = spinnerTwo
+                selectorBox.selectionSave.selectionThree = spinnerThree
+                selectorBox.selectionSave.selectionFour = spinnerFour
             }
         }
 

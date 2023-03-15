@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
@@ -25,6 +26,10 @@ class CharacterCreationStepTwo : Fragment() {
     ): View? {
         _binding = FragmentCharacterCreationStepTwoBinding.inflate(inflater, container, false)
         val view = binding.root
+        val layoutManager = LinearLayoutManager(context).apply {
+            recycleChildrenOnDetach = false
+        }
+
 
         //Set Number of Steps
         binding.ccStepTwoStepCount.text = resources.getStringArray(R.array.cc_steps)[1]
@@ -40,6 +45,7 @@ class CharacterCreationStepTwo : Fragment() {
         binding.selectorBoxRecyclerStepTwo.layoutManager = LinearLayoutManager(requireContext())
         var adapter = SelectionBoxAdapter(viewModel.repository.classNoneSelected, requireContext())
         binding.selectorBoxRecyclerStepTwo.adapter = adapter
+        binding.selectorBoxRecyclerStepTwo.layoutManager = layoutManager
         //OnItemSelectedListener: Change Shown Objects on Selected Item in Spinner
         binding.ccStepTwoClassSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -62,11 +68,30 @@ class CharacterCreationStepTwo : Fragment() {
                 binding.selectorBoxRecyclerStepTwo.adapter = adapter
                 adapter.notifyDataSetChanged()
 
+                //Save Selection to TempSave
+                viewModel.characterTempSave.selectedClass = position
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
                 // your code here
             }
+        }
+        //Set Spinner to previously selected Item
+        binding.ccStepTwoClassSpinner.setSelection(viewModel.characterTempSave.selectedClass)
+
+        //Navigation-Buttons
+        //Back Button
+        binding.ccStepTwoBackButton.setOnClickListener{
+            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterCreationStepOne())
+        }
+        //Cancel Button
+        binding.ccStepTwoCancelButton.setOnClickListener {
+            viewModel.resetCharacterTempSave()
+            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterList())
+        }
+        //Next Button
+        binding.ccStepTwoNextButton.setOnClickListener {
+            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterCreationStepThree())
         }
 
         return view

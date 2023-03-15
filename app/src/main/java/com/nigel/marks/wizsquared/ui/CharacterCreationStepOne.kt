@@ -43,6 +43,7 @@ class CharacterCreationStepOne : Fragment() {
         binding.selectorBoxRecycler.layoutManager = LinearLayoutManager(requireContext())
         var adapter = SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
         binding.selectorBoxRecycler.adapter = adapter
+
         //OnItemSelectedListener: Change Shown Objects on Selected Item in Spinner
         binding.ccStepOneRaceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -68,6 +69,8 @@ class CharacterCreationStepOne : Fragment() {
                 binding.selectorBoxRecycler.adapter = adapter
                 adapter.notifyDataSetChanged()
 
+                //Save Selection to TempSave
+                viewModel.characterTempSave.selectedRace = position
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>?) {
@@ -75,9 +78,13 @@ class CharacterCreationStepOne : Fragment() {
             }
         }
 
+        //Set Spinner to previously selected Item
+        binding.ccStepOneRaceSpinner.setSelection(viewModel.characterTempSave.selectedRace)
+
         //Navigation-Buttons
         //Cancel Button
         binding.ccStepOneCancelButton.setOnClickListener{
+            viewModel.resetCharacterTempSave()
             findNavController().navigate(CharacterCreationStepOneDirections.actionCharacterCreationStepOneToCharacterList())
         }
         //Next Button
