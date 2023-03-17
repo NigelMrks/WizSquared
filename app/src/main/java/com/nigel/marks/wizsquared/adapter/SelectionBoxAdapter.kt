@@ -29,7 +29,9 @@ class SelectionBoxAdapter(var selectionList:List<SelectorBox>, var context: Cont
                 }
 
                 //Set Initial Description
-                binding.selectorDesc.text = selectorBox.descriptions[0]
+                if (selectorBox.descriptions.isNotEmpty()) {
+                    binding.selectorDesc.text = selectorBox.descriptions[0]
+                }
 
                 //Initialize onItemSelectedListeners
                 binding.selectorSpinnerOne.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

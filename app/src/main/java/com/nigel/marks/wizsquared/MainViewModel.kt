@@ -38,6 +38,8 @@ class MainViewModel : ViewModel() {
             roll.clear()
             attributes.add(rollTotal)
         }
+        attributes.sortDescending()
         return attributes
     }
+
 }
