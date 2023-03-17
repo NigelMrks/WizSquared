@@ -76,6 +76,7 @@ class CharacterCreationStepThree : Fragment() {
                 id: Long
             ) {
                 setVisibilities(position)
+                viewModel.characterTempSave.abilityMethod = position
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -101,8 +102,9 @@ class CharacterCreationStepThree : Fragment() {
         }
 
         //Set initial Ability-Spinner Positions
+        binding.ccStepThreeAbilitySpinner.setSelection(viewModel.characterTempSave.abilityMethod)
         for (i in 0..5) {
-            spinners[i].setSelection(i)
+            spinners[i].setSelection(viewModel.characterTempSave.abilityScores[i])
         }
 
         //Roll-Button
@@ -111,11 +113,26 @@ class CharacterCreationStepThree : Fragment() {
             setVisibilities(1)
         }
 
+        //Navigation-Buttons
+        //Back Button
+        binding.ccStepThreeBackButton.setOnClickListener{
+            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterCreationStepTwo())
+        }
+        //Cancel Button
+        binding.ccStepThreeCancelButton.setOnClickListener {
+            viewModel.resetCharacterTempSave()
+            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterList())
+        }
+        //Next Button
+        binding.ccStepThreeNextButton.setOnClickListener {
+            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterCreationStepFour())
+        }
+
         return view
     }
 
     fun setVisibilities(selected: Int) {
-        var abilityScores: List<Int>
+        val abilityScores: List<Int>
         val textViews: List<TextView> = listOf(
             binding.abilityOne,
             binding.abilityTwo,

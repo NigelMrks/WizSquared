@@ -29,7 +29,6 @@
         <item>Tiefling</item>
         <item>Custom</item>
     </string-array>
-
     <string-array name="classes_selection_spinner">
         <item>Choose</item>
         <item>Barbarian</item>
@@ -45,13 +44,11 @@
         <item>Warlock</item>
         <item>Wizard</item>
     </string-array>
-
     <string-array name="ability_methods">
         <item>Choose</item>
         <item>Rolling for it</item>
         <item>Standard Array</item>
     </string-array>
-
     <string-array name="ability_scores">
         <item>Strength</item>
         <item>Dexterity</item>
@@ -197,6 +194,28 @@
         <item>Investigation</item>
         <item>Medicine</item>
         <item>Religion</item>
+    </string-array>
+
+
+    <string-array name="languages">
+        <!--Standard Languages-->
+        <item>Common</item>
+        <item>Dwarvish</item>
+        <item>Elvish</item>
+        <item>Giant</item>
+        <item>Gnomish</item>
+        <item>Goblin</item>
+        <item>Halfling</item>
+        <item>Orc</item>
+        <!--Exotic Languages-->
+        <item>Abyssal</item>
+        <item>Celestial</item>
+        <item>Draconic</item>
+        <item>Deep Speech</item>
+        <item>Infernal</item>
+        <item>Primordial</item>
+        <item>Sylvan</item>
+        <item>Undercommon</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

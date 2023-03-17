@@ -45,5 +45,20 @@
         android:id="@+id/characterCreationStepThree"
         android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepThree"
         android:label="fragment_character_creation_step_three"
-        tools:layout="@layout/fragment_character_creation_step_three" />
+        tools:layout="@layout/fragment_character_creation_step_three" >
+        <action
+            android:id="@+id/action_characterCreationStepThree_to_characterCreationStepFour"
+            app:destination="@id/characterCreationStepFour" />
+        <action
+            android:id="@+id/action_characterCreationStepThree_to_characterCreationStepTwo"
+            app:destination="@id/characterCreationStepTwo" />
+        <action
+            android:id="@+id/action_characterCreationStepThree_to_characterList"
+            app:destination="@id/characterList" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterCreationStepFour"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepFour"
+        android:label="fragment_character_creation_step_four"
+        tools:layout="@layout/fragment_character_creation_step_four" />
 </navigation>

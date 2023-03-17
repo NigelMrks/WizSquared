@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray"
+    tools:context=".ui.CharacterCreationStepFour">
+
+    <TextView
+        android:id="@+id/cc_step_four_step_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Step X/9" />
+
+    <TextView
+        android:id="@+id/cc_step_four_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Select Background"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/cc_step_four_step_count"
+        app:layout_constraintStart_toStartOf="@+id/cc_step_four_step_count"
+        app:layout_constraintTop_toBottomOf="@+id/cc_step_four_step_count" />
+
+    <Button
+        android:id="@+id/cc_step_four_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="back"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/cc_step_four_cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/cc_step_four_next_button"
+        app:layout_constraintEnd_toStartOf="@+id/cc_step_four_next_button"
+        app:layout_constraintStart_toEndOf="@+id/cc_step_four_back_button"
+        app:layout_constraintTop_toTopOf="@+id/cc_step_four_next_button" />
+
+    <Button
+        android:id="@+id/cc_step_four_next_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/background_name_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/primary_light"
+        android:drawableTint="@color/primary_light"
+        android:ems="10"
+        android:foregroundTint="@color/primary_light"
+        android:hint="Background"
+        android:inputType="textPersonName"
+        android:textColor="@color/primary_light"
+        android:textColorHint="@color/primary_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cc_step_four_title_text" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/skill_one_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="@color/primary_dark"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/skill_two_card"
+        app:layout_constraintTop_toBottomOf="@+id/background_name_edit"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp">
+
+        <Spinner
+            android:id="@+id/skill_one_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:entries="@array/skill_choices_bard" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/skill_one_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skill #1:"
+        android:textColor="@color/primary_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/skill_one_card"
+        app:layout_constraintStart_toStartOf="@+id/background_name_edit"
+        app:layout_constraintTop_toTopOf="@+id/skill_one_card" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/skill_two_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="@color/primary_dark"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lang_one_card"
+        app:layout_constraintTop_toBottomOf="@+id/skill_one_card"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp">
+
+        <Spinner
+            android:id="@+id/skill_two_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:entries="@array/skill_choices_bard" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/skill_two_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Skill #2:"
+        android:textColor="@color/primary_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/skill_two_card"
+        app:layout_constraintStart_toStartOf="@+id/skill_one_text"
+        app:layout_constraintTop_toTopOf="@+id/skill_two_card" />
+
+    <TextView
+        android:id="@+id/lang_one_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Language #1:"
+        android:textColor="@color/primary_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/lang_one_card"
+        app:layout_constraintStart_toStartOf="@+id/skill_two_text"
+        app:layout_constraintTop_toTopOf="@+id/lang_one_card" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/lang_one_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="@color/primary_dark"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lang_one_text"
+        app:layout_constraintTop_toBottomOf="@+id/skill_two_card"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp">
+
+        <Spinner
+            android:id="@+id/lang_one_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:entries="@array/languages" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/lang_two_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:cardBackgroundColor="@color/primary_dark"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/lang_one_card"
+        app:layout_constraintTop_toBottomOf="@+id/lang_one_card"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp">
+
+        <Spinner
+            android:id="@+id/lang_two_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:entries="@array/languages" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/lang_two_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Language #2:"
+        android:textColor="@color/primary_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/lang_two_card"
+        app:layout_constraintStart_toStartOf="@+id/lang_one_text"
+        app:layout_constraintTop_toTopOf="@+id/lang_two_card" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Equipment:"
+        android:textColor="@color/primary_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/equipment_amount_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/equipment_amount_edit" />
+
+    <EditText
+        android:id="@+id/equipment_amount_edit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/primary_light"
+        android:ems="10"
+        android:hint="#"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@color/primary_light"
+        android:textColorHint="@color/primary_light"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/lang_two_card" />
+
+    <EditText
+        android:id="@+id/equipment_add_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/primary_light"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/primary_light"
+        android:textColorHint="@color/primary_light"
+        app:layout_constraintBottom_toBottomOf="@+id/equipment_amount_edit"
+        app:layout_constraintEnd_toStartOf="@+id/equipment_add_button"
+        app:layout_constraintStart_toEndOf="@+id/equipment_amount_edit"
+        app:layout_constraintTop_toTopOf="@+id/equipment_amount_edit" />
+
+    <Button
+        android:id="@+id/equipment_add_button"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="+"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/equipment_amount_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/equipment_amount_edit"
+        app:strokeColor="@color/primary_light"
+        app:strokeWidth="2dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ccStepThree_eqRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/cc_step_four_next_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/equipment_add_edit"
+        tools:listitem="@layout/equipment_item" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
