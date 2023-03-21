@@ -3,6 +3,8 @@ package com.nigel.marks.wizsquared
 import androidx.lifecycle.ViewModel
 import com.nigel.marks.wizsquared.data.Repository
 import com.nigel.marks.wizsquared.data.model.CharacterCreationTempSave
+import com.nigel.marks.wizsquared.data.model.Equipment
+import com.nigel.marks.wizsquared.data.model.SelectionSave
 
 class MainViewModel : ViewModel() {
     val repository = Repository()
@@ -40,6 +42,38 @@ class MainViewModel : ViewModel() {
         }
         attributes.sortDescending()
         return attributes
+    }
+
+    fun getClassEquipment() {
+        var classEquipmentList = mutableListOf<Equipment>()
+        var savedEq: SelectionSave
+        when(characterTempSave.selectedClass){
+            1 -> { //Selected Class = Barbarian
+                savedEq = repository.classBarbarian.last().selectionSave
+                classEquipmentList.add(repository.eqBarbarian[0][savedEq.selectionOne])
+                classEquipmentList.add(repository.eqBarbarian[1][savedEq.selectionTwo])
+                classEquipmentList.addAll(repository.eqBarbarian[2])
+            }
+        }
+        characterTempSave.listOfClassEquipment.value = classEquipmentList
+    }
+
+    fun getClassWealth(): Pair<Int,Boolean> {
+        return repository.classWealthList[characterTempSave.selectedClass]
+    }
+    fun rollWealth(classWealth: Pair<Int,Boolean>){
+        val wealthRoll = mutableListOf<Int>()
+        for (i in 1..classWealth.first) {
+            wealthRoll.add((1..4).random())
+        }
+        var total = wealthRoll.sum()
+        if (classWealth.second) total *= 10
+        wealthRoll.add(total)
+        characterTempSave.startingWealthRolled = wealthRoll
+    }
+    fun clearWealth(){
+        characterTempSave.isUsingClassEquipment = true
+        characterTempSave.startingWealthRolled = listOf()
     }
 
 }

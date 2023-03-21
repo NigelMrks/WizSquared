@@ -65,6 +65,7 @@ class CharacterCreationStepTwo : Fragment() {
                         SelectionBoxAdapter(listOf(), requireContext())
                     }
                 }
+                viewModel.clearWealth()
                 binding.selectorBoxRecyclerStepTwo.adapter = adapter
                 adapter.notifyDataSetChanged()
 

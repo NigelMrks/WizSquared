@@ -60,5 +60,35 @@
         android:id="@+id/characterCreationStepFour"
         android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepFour"
         android:label="fragment_character_creation_step_four"
-        tools:layout="@layout/fragment_character_creation_step_four" />
+        tools:layout="@layout/fragment_character_creation_step_four" >
+        <action
+            android:id="@+id/action_characterCreationStepFour_to_characterCreationStepFive"
+            app:destination="@id/characterCreationStepFive" />
+        <action
+            android:id="@+id/action_characterCreationStepFour_to_characterCreationStepThree"
+            app:destination="@id/characterCreationStepThree" />
+        <action
+            android:id="@+id/action_characterCreationStepFour_to_characterList"
+            app:destination="@id/characterList" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterCreationStepFive"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationStepFive"
+        android:label="fragment_character_creation_step_five"
+        tools:layout="@layout/fragment_character_creation_step_five" >
+        <action
+            android:id="@+id/action_characterCreationStepFive_to_characterCreationStepSix"
+            app:destination="@id/characterCreationStepSix" />
+        <action
+            android:id="@+id/action_characterCreationStepFive_to_characterCreationStepFour"
+            app:destination="@id/characterCreationStepFour" />
+        <action
+            android:id="@+id/action_characterCreationStepFive_to_characterList"
+            app:destination="@id/characterList" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterCreationStepSix"
+        android:name="com.nigel.marks.wizsquared.CharacterCreationStepSix"
+        android:label="fragment_character_creation_step_six"
+        tools:layout="@layout/fragment_character_creation_step_six" />
 </navigation>

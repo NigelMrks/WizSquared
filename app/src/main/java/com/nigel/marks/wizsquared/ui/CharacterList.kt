@@ -11,11 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterListBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CharacterList.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CharacterList : Fragment() {
 
     private var _binding: FragmentCharacterListBinding? = null
@@ -32,6 +27,7 @@ class CharacterList : Fragment() {
 
         //code goes here
         binding.listNewButton.setOnClickListener {
+            viewModel.repository.loadLists()
             findNavController().navigate(CharacterListDirections.actionCharacterListToCharacterCreationStepOne())
         }
 

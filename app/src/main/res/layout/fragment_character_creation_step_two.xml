@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cc_step_two_step_count" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/ccStepFour_choice_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -132,7 +132,7 @@
         app:layout_constraintBottom_toTopOf="@+id/cc_step_two_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        app:layout_constraintTop_toBottomOf="@+id/ccStepFour_choice_card"
         tools:listitem="@layout/selector_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

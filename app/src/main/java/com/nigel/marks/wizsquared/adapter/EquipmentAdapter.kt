@@ -2,13 +2,14 @@ package com.nigel.marks.wizsquared.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.databinding.EquipmentItemBinding
 
-class EquipmentAdapter(var equipmentList:MutableLiveData<MutableList<Equipment>>, var context: Context)
+class EquipmentAdapter(var equipmentList:MutableLiveData<MutableList<Equipment>>, var context: Context, var editable: Boolean)
     : RecyclerView.Adapter<EquipmentAdapter.EquipmentHolder>(){
 
     inner class EquipmentHolder(private val binding: EquipmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -16,10 +17,14 @@ class EquipmentAdapter(var equipmentList:MutableLiveData<MutableList<Equipment>>
             binding.equipmentAmount.text = String.format("%02d", equipment.amount)
             binding.equipmentText.text = equipment.name
 
-            binding.equipmentDeleteButton.setOnClickListener {
-                equipmentList.value?.remove(equipment)
-                equipmentList.value = equipmentList.value
+            if (editable) {
+                binding.equipmentDeleteButton.visibility = View.VISIBLE
+                binding.equipmentDeleteButton.setOnClickListener {
+                    equipmentList.value?.remove(equipment)
+                    equipmentList.value = equipmentList.value
+                }
             }
+            else binding.equipmentDeleteButton.visibility = View.GONE
         }
     }
 
