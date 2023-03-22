@@ -115,16 +115,16 @@ class CharacterCreationStepFive : Fragment() {
         //Navigation-Buttons
         //Back Button
         binding.ccStepFiveBackButton.setOnClickListener{
-            findNavController().navigate(CharacterCreationStepFiveDirections.actionCharacterCreationStepFiveToCharacterCreationStepFour())
+            findNavController().navigate(R.id.cc_step_five_back_button)
         }
         //Cancel Button
         binding.ccStepFiveCancelButton.setOnClickListener {
             viewModel.resetCharacterTempSave()
-            findNavController().navigate(CharacterCreationStepFiveDirections.actionCharacterCreationStepFiveToCharacterList())
+            findNavController().navigate(R.id.cc_step5_cancel)
         }
         //Next Button
         binding.ccStepFiveNextButton.setOnClickListener {
-            findNavController().navigate(CharacterCreationStepFiveDirections.actionCharacterCreationStepFiveToCharacterCreationStepSix())
+            findNavController().navigate(R.id.cc_step5_next)
         }
 
         return view

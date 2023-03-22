@@ -2,15 +2,13 @@
     <string name="app_name">Wiz\u00B2</string>
 
     <string-array name="cc_steps">
-        <item>Step 1/9</item>
-        <item>Step 2/9</item>
-        <item>Step 3/9</item>
-        <item>Step 4/9</item>
-        <item>Step 5/9</item>
-        <item>Step 6/9</item>
-        <item>Step 7/9</item>
-        <item>Step 8/9</item>
-        <item>Step 9/9</item>
+        <item>Step 1/7</item>
+        <item>Step 2/7</item>
+        <item>Step 3/7</item>
+        <item>Step 4/7</item>
+        <item>Step 5/7</item>
+        <item>Step 6/7</item>
+        <item>Step 7/7</item>
     </string-array>
 
     <string name="select_race">Select Race</string>

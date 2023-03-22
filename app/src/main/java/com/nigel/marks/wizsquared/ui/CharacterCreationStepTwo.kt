@@ -83,16 +83,16 @@ class CharacterCreationStepTwo : Fragment() {
         //Navigation-Buttons
         //Back Button
         binding.ccStepTwoBackButton.setOnClickListener{
-            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterCreationStepOne())
+            findNavController().navigate(R.id.cc_step2_back)
         }
         //Cancel Button
         binding.ccStepTwoCancelButton.setOnClickListener {
             viewModel.resetCharacterTempSave()
-            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterList())
+            findNavController().navigate(R.id.cc_step2_cancel)
         }
         //Next Button
         binding.ccStepTwoNextButton.setOnClickListener {
-            findNavController().navigate(CharacterCreationStepTwoDirections.actionCharacterCreationStepTwoToCharacterCreationStepThree())
+            findNavController().navigate(R.id.cc_step2_next)
         }
 
         return view

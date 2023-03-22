@@ -1,7 +1,5 @@
 package com.nigel.marks.wizsquared.ui
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
-import com.nigel.marks.wizsquared.adapter.SelectionBoxAdapter
-import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepOneBinding
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepThreeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -116,16 +111,16 @@ class CharacterCreationStepThree : Fragment() {
         //Navigation-Buttons
         //Back Button
         binding.ccStepThreeBackButton.setOnClickListener{
-            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterCreationStepTwo())
+            findNavController().navigate(R.id.cc_step3_back)
         }
         //Cancel Button
         binding.ccStepThreeCancelButton.setOnClickListener {
             viewModel.resetCharacterTempSave()
-            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterList())
+            findNavController().navigate(R.id.cc_step3_cancel)
         }
         //Next Button
         binding.ccStepThreeNextButton.setOnClickListener {
-            findNavController().navigate(CharacterCreationStepThreeDirections.actionCharacterCreationStepThreeToCharacterCreationStepFour())
+            findNavController().navigate(R.id.cc_step3_next)
         }
 
         return view

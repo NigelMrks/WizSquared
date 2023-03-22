@@ -166,19 +166,19 @@ class CharacterCreationStepFour : Fragment() {
             if (binding.backgroundNameEdit.text != null) {
                 viewModel.characterTempSave.backgroundName = binding.backgroundNameEdit.text.toString()
             }
-            findNavController().navigate(CharacterCreationStepFourDirections.actionCharacterCreationStepFourToCharacterCreationStepThree())
+            findNavController().navigate(R.id.cc_step4_back)
         }
         //Cancel Button
         binding.ccStepFourCancelButton.setOnClickListener {
             viewModel.resetCharacterTempSave()
-            findNavController().navigate(CharacterCreationStepFourDirections.actionCharacterCreationStepFourToCharacterList())
+            findNavController().navigate(R.id.cc_step4_cancel)
         }
         //Next Button
         binding.ccStepFourNextButton.setOnClickListener {
             if (binding.backgroundNameEdit.text != null) {
                 viewModel.characterTempSave.backgroundName = binding.backgroundNameEdit.text.toString()
             }
-            findNavController().navigate(CharacterCreationStepFourDirections.actionCharacterCreationStepFourToCharacterCreationStepFive())
+            findNavController().navigate(R.id.cc_step4_next)
         }
 
         return view

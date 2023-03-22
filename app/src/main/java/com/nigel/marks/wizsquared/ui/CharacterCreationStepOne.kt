@@ -85,11 +85,11 @@ class CharacterCreationStepOne : Fragment() {
         //Cancel Button
         binding.ccStepOneCancelButton.setOnClickListener{
             viewModel.resetCharacterTempSave()
-            findNavController().navigate(CharacterCreationStepOneDirections.actionCharacterCreationStepOneToCharacterList())
+            findNavController().navigate(R.id.cc_step1_cancel)
         }
         //Next Button
         binding.ccStepOneNextButton.setOnClickListener{
-            findNavController().navigate(CharacterCreationStepOneDirections.actionCharacterCreationStepOneToCharacterCreationStepTwo())
+            findNavController().navigate(R.id.cc_step1_next)
         }
 
 
