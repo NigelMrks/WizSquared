@@ -4,12 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.nigel.marks.wizsquared.data.entities.Spell
 import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.databinding.EquipmentItemBinding
 
-class EquipmentAdapter(var equipmentList:MutableLiveData<MutableList<Equipment>>, var context: Context, var editable: Boolean)
+class EquipmentAdapter(var equipmentList: MutableLiveData<MutableList<Equipment>>, var context: Context, var editable: Boolean)
     : RecyclerView.Adapter<EquipmentAdapter.EquipmentHolder>(){
 
     inner class EquipmentHolder(private val binding: EquipmentItemBinding) : RecyclerView.ViewHolder(binding.root) {

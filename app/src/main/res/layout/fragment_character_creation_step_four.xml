@@ -275,7 +275,7 @@
         app:strokeWidth="2dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ccStepThree_eqRecycler"
+        android:id="@+id/ccStepFour_eqRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"

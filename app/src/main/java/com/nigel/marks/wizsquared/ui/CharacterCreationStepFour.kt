@@ -143,9 +143,9 @@ class CharacterCreationStepFour : Fragment() {
         }
 
         //Recyclerview Adapter
-        binding.ccStepThreeEqRecycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.ccStepFourEqRecycler.layoutManager = LinearLayoutManager(requireContext())
         val adapter = EquipmentAdapter(viewModel.characterTempSave.backgroundEquipment, requireContext(), true)
-        binding.ccStepThreeEqRecycler.adapter = adapter
+        binding.ccStepFourEqRecycler.adapter = adapter
 
         viewModel.characterTempSave.backgroundEquipment.observe(viewLifecycleOwner) {
             adapter.resubmitList()

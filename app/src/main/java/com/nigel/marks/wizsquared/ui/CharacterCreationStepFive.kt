@@ -89,7 +89,7 @@ class CharacterCreationStepFive : Fragment() {
                 var rolledWealth = viewModel.characterTempSave.startingWealthRolled
                 for (image in diceImages) {
                     lifecycleScope.launch {
-                        for (i in 1..50) {
+                        for (i in 1..30) {
                             image.setImageResource(d4s.random())
                             delay(100)
                         }
@@ -115,7 +115,7 @@ class CharacterCreationStepFive : Fragment() {
         //Navigation-Buttons
         //Back Button
         binding.ccStepFiveBackButton.setOnClickListener{
-            findNavController().navigate(R.id.cc_step_five_back_button)
+            findNavController().navigate(R.id.cc_step5_back )
         }
         //Cancel Button
         binding.ccStepFiveCancelButton.setOnClickListener {

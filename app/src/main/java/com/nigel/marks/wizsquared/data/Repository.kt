@@ -1,9 +1,21 @@
 package com.nigel.marks.wizsquared.data
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.nigel.marks.wizsquared.data.db.SpellDatabase
+import com.nigel.marks.wizsquared.data.entities.Spell
 import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.data.model.SelectorBox
+import com.nigel.marks.wizsquared.data.model.SpellResult
+import com.nigel.marks.wizsquared.data.remote.SpellAPI
+import kotlinx.coroutines.launch
 
-class Repository {
+class Repository (private val database: SpellDatabase, private val spellApi: SpellAPI){
+    //Spell List
+    var spellList: LiveData<List<Spell>> = database.spellDao.getAll()
+
     //List of Alignments as Strings
     private val alignments: List<String> = listOf(
         "Choose",
@@ -564,5 +576,26 @@ class Repository {
                 )
             )
         )
+    }
+
+    suspend fun loadSpellApi() {
+        var i = 1
+        var morePages = true
+        while (morePages) {
+            var result: SpellResult? = null
+            result = spellApi.retrofitService.getSpellResults(i)
+            Log.d("MainViewModel", result.toString())
+            if (result?.next != null && result?.next  != "null") {
+                i++
+            }
+            else morePages = false
+            if (result != null) {
+                for (spell in result?.results!!) {
+                    database.spellDao.insert(spell)
+                }
+            }
+        }
+        spellList = database.spellDao.getAll()
+
     }
 }

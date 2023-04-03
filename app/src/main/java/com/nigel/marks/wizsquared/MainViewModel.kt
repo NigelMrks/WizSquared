@@ -1,13 +1,21 @@
 package com.nigel.marks.wizsquared
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
 import com.nigel.marks.wizsquared.data.Repository
+import com.nigel.marks.wizsquared.data.db.getDatabase
+import com.nigel.marks.wizsquared.data.entities.Spell
 import com.nigel.marks.wizsquared.data.model.CharacterCreationTempSave
 import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.data.model.SelectionSave
+import com.nigel.marks.wizsquared.data.remote.SpellAPI
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    val repository = Repository()
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val database = getDatabase(application)
+    val repository = Repository(database, SpellAPI)
+    val spellList: LiveData<List<Spell>> = repository.spellList
     var characterTempSave: CharacterCreationTempSave = CharacterCreationTempSave()
 
     fun resetCharacterTempSave() {
@@ -75,5 +83,17 @@ class MainViewModel : ViewModel() {
         characterTempSave.isUsingClassEquipment = true
         characterTempSave.startingWealthRolled = listOf()
     }
+
+    fun loadSpells() {
+        viewModelScope.launch {
+            repository.loadSpellApi()
+        }
+    }
+
+    fun getSpells(selClass: String, toLevel: Int): LiveData<List<Spell>> {
+        return database.spellDao.filterSpells(selClass, toLevel)
+    }
+
+
 
 }
