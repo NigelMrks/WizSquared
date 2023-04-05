@@ -19,4 +19,5 @@ data class Spell(
     val level_int: Int,
     val school: String,
     val dnd_class: String,
+    var isSelected: Boolean = false
 )

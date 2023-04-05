@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nigel.marks.wizsquared.data.entities.Spell
 
-@Database(entities = [Spell::class], version = 2)
+@Database(entities = [Spell::class], version = 3)
 abstract class SpellDatabase : RoomDatabase() {
 
     abstract val spellDao: SpellDao

@@ -11,6 +11,8 @@
         <item>Step 7/7</item>
     </string-array>
 
+    <string name="no_spells_text">The Arcane is a Mystery to you…</string>
+
     <string name="select_race">Select Race</string>
     <string name="select_class">Select Class</string>
 

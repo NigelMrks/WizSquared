@@ -13,4 +13,5 @@
     <color name="text_beige">#E7D1B3</color>
     <color name="primary_dark">#004346</color>
     <color name="primary_light">#09BC8A</color>
+    <color name="primary_inverted">#BC093B</color>
 </resources>
