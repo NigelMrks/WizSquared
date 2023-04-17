@@ -27,7 +27,7 @@ class CharacterList : Fragment() {
 
         //code goes here
         binding.listNewButton.setOnClickListener {
-            viewModel.repository.loadLists()
+            viewModel.repository.resetMaps()
             findNavController().navigate(com.nigel.marks.wizsquared.R.id.home_to_character_creation)
         }
 

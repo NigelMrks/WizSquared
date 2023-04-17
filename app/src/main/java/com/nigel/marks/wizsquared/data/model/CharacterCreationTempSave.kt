@@ -8,7 +8,7 @@ data class CharacterCreationTempSave(
     var selectedClass: Int = 0,
     var abilityMethod: Int = 0,
     var rolledAbilities: List<Int> = listOf(),
-    var abilityScores: MutableList<Int> = mutableListOf(0,1,2,3,4,5),
+    var abilityScoresRef: MutableList<Int> = mutableListOf(0,1,2,3,4,5),
     var backgroundEquipment: MutableLiveData<MutableList<Equipment>> = MutableLiveData(mutableListOf()),
     var backgroundName: String = "",
     var bgSkillOne: Int = 0,

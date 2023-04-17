@@ -53,7 +53,7 @@ class CharacterCreationStepFive : Fragment() {
 
         //Recyclerview Adapter
         viewModel.getClassEquipment()
-        var fullEquipmentList = MutableLiveData<MutableList<Equipment>>(mutableListOf())
+        val fullEquipmentList = MutableLiveData<MutableList<Equipment>>(mutableListOf())
         fullEquipmentList.value?.addAll(viewModel.characterTempSave.backgroundEquipment.value!!)
         fullEquipmentList.value?.addAll(viewModel.characterTempSave.listOfClassEquipment.value!!)
         binding.ccStepFiveEqRecycler.layoutManager = LinearLayoutManager(requireContext())
@@ -61,7 +61,7 @@ class CharacterCreationStepFive : Fragment() {
         binding.ccStepFiveEqRecycler.adapter = adapter
 
         //StartingWealth
-        var d4s = listOf<Int>(R.drawable.d4_1,R.drawable.d4_2,R.drawable.d4_3,R.drawable.d4_4)
+        val d4s = listOf<Int>(R.drawable.d4_1,R.drawable.d4_2,R.drawable.d4_3,R.drawable.d4_4)
         val startingWealth = viewModel.getClassWealth()
         val diceImages = listOf<ImageView>(binding.d41,binding.d42,binding.d43,binding.d44,binding.d45)
         for (image in diceImages) image.visibility = View.GONE
@@ -86,7 +86,7 @@ class CharacterCreationStepFive : Fragment() {
             binding.goldRollButton.setOnClickListener {
                 binding.goldRollButton.visibility = View.GONE
                 viewModel.rollWealth(startingWealth)
-                var rolledWealth = viewModel.characterTempSave.startingWealthRolled
+                val rolledWealth = viewModel.characterTempSave.startingWealthRolled
                 for (image in diceImages) {
                     lifecycleScope.launch {
                         for (i in 1..30) {

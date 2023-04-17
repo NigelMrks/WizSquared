@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
 import com.nigel.marks.wizsquared.adapter.SelectionBoxAdapter
+import com.nigel.marks.wizsquared.data.model.SelectorBox
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepOneBinding
 
 class CharacterCreationStepOne : Fragment() {
@@ -39,9 +40,10 @@ class CharacterCreationStepOne : Fragment() {
             R.layout.spinner_list,
             resources.getStringArray(R.array.races_selection_spinner)
         )
-        //Apply Adapter to Spinner
+
+        //Apply Adapter to RV
         binding.selectorBoxRecycler.layoutManager = LinearLayoutManager(requireContext())
-        var adapter = SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
+        var adapter = SelectionBoxAdapter(listOf(), requireContext(), mutableMapOf())
         binding.selectorBoxRecycler.adapter = adapter
 
         //OnItemSelectedListener: Change Shown Objects on Selected Item in Spinner
@@ -52,20 +54,51 @@ class CharacterCreationStepOne : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                adapter = when (binding.ccStepOneRaceSpinner.selectedItem.toString()) {
-                    "Choose" -> {
-                        SelectionBoxAdapter(viewModel.repository.raceNoneSelected, requireContext())
-                    }
+                val adapterList: List<SelectorBox>
+                val saveMap: MutableMap<String,String>
+                when (binding.ccStepOneRaceSpinner.selectedItem.toString()) {
                     "Dragonborn" -> {
-                        SelectionBoxAdapter(viewModel.repository.raceDragonborn, requireContext())
+                        adapterList = viewModel.repository.raceDragonborn
+                        saveMap = viewModel.repository.raceMapDragonborn
                     }
                     "Dwarf" -> {
-                        SelectionBoxAdapter(viewModel.repository.raceDwarf, requireContext())
+                        adapterList = viewModel.repository.raceDwarf
+                        saveMap = viewModel.repository.raceMapDwarf
+                    }
+                    "Elf" -> {
+                        adapterList = viewModel.repository.raceElf
+                        saveMap = viewModel.repository.raceMapElf
+                    }
+                    "Gnome" -> {
+                        adapterList = viewModel.repository.raceGnome
+                        saveMap = viewModel.repository.raceMapGnome
+                    }
+                    "Half-Elf" -> {
+                        adapterList = viewModel.repository.raceHalfElf
+                        saveMap = viewModel.repository.raceMapHalfElf
+                    }
+                    "Half-Orc" -> {
+                        adapterList = viewModel.repository.raceHalfOrc
+                        saveMap = viewModel.repository.raceMapHalfOrc
+                    }
+                    "Halfling" -> {
+                        adapterList = viewModel.repository.raceHalfling
+                        saveMap = viewModel.repository.raceMapHalfling
+                    }
+                    "Human" -> {
+                        adapterList = viewModel.repository.raceHuman
+                        saveMap = viewModel.repository.raceMapHuman
+                    }
+                    "Tiefling" -> {
+                        adapterList = viewModel.repository.raceTiefling
+                        saveMap = viewModel.repository.raceMapTiefling
                     }
                     else -> {
-                        SelectionBoxAdapter(listOf(), requireContext())
+                        adapterList = listOf()
+                        saveMap = mutableMapOf()
                     }
                 }
+                adapter = SelectionBoxAdapter(adapterList, requireContext(), saveMap)
                 binding.selectorBoxRecycler.adapter = adapter
                 adapter.notifyDataSetChanged()
 

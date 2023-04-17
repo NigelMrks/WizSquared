@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
 import com.nigel.marks.wizsquared.R
 import com.nigel.marks.wizsquared.adapter.SelectionBoxAdapter
+import com.nigel.marks.wizsquared.data.model.SelectorBox
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterCreationStepTwoBinding
 
 class CharacterCreationStepTwo : Fragment() {
@@ -43,7 +44,7 @@ class CharacterCreationStepTwo : Fragment() {
         )
         //Recyclerview Adapter
         binding.selectorBoxRecyclerStepTwo.layoutManager = LinearLayoutManager(requireContext())
-        var adapter = SelectionBoxAdapter(viewModel.repository.classNoneSelected, requireContext())
+        var adapter = SelectionBoxAdapter(listOf(), requireContext(), mutableMapOf())
         binding.selectorBoxRecyclerStepTwo.adapter = adapter
         binding.selectorBoxRecyclerStepTwo.layoutManager = layoutManager
         //OnItemSelectedListener: Change Shown Objects on Selected Item in Spinner
@@ -54,23 +55,70 @@ class CharacterCreationStepTwo : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                adapter = when (binding.ccStepTwoClassSpinner.selectedItem.toString()) {
-                    "Choose" -> {
-                        SelectionBoxAdapter(viewModel.repository.classNoneSelected, requireContext())
-                    }
+                val adapterList: List<SelectorBox>
+                val saveMap: MutableMap<String,String>
+                when (binding.ccStepTwoClassSpinner.selectedItem.toString()) {
                     "Barbarian" -> {
-                        SelectionBoxAdapter(viewModel.repository.classBarbarian, requireContext())
+                        adapterList = viewModel.repository.classBarbarian
+                        saveMap = viewModel.repository.classMapBarbarian
+                    }
+                    "Bard" -> {
+                        adapterList = viewModel.repository.classBard
+                        saveMap = viewModel.repository.classMapBard
+                    }
+                    "Cleric" -> {
+                        adapterList = viewModel.repository.classCleric
+                        saveMap = viewModel.repository.classMapCleric
+                    }
+                    "Druid" -> {
+                        adapterList = viewModel.repository.classDruid
+                        saveMap = viewModel.repository.classMapDruid
+                    }
+                    "Fighter" -> {
+                        adapterList = viewModel.repository.classFighter
+                        saveMap = viewModel.repository.classMapFighter
+                    }
+                    "Monk" -> {
+                        adapterList = viewModel.repository.classMonk
+                        saveMap = viewModel.repository.classMapMonk
+                    }
+                    "Paladin" -> {
+                        adapterList = viewModel.repository.classPaladin
+                        saveMap = viewModel.repository.classMapPaladin
+                    }
+                    "Ranger" -> {
+                        adapterList = viewModel.repository.classRanger
+                        saveMap = viewModel.repository.classMapRanger
+                    }
+                    "Rogue" -> {
+                        adapterList = viewModel.repository.classRogue
+                        saveMap = viewModel.repository.classMapRogue
+                    }
+                    "Sorcerer" -> {
+                        adapterList = viewModel.repository.classSorcerer
+                        saveMap = viewModel.repository.classMapSorcerer
+                    }
+                    "Warlock" -> {
+                        adapterList = viewModel.repository.classWarlock
+                        saveMap = viewModel.repository.classMapWarlock
+                    }
+                    "Wizard" -> {
+                        adapterList = viewModel.repository.classWizard
+                        saveMap = viewModel.repository.classMapWizard
                     }
                     else -> {
-                        SelectionBoxAdapter(listOf(), requireContext())
+                        adapterList = listOf()
+                        saveMap = mutableMapOf()
                     }
                 }
+                adapter = SelectionBoxAdapter(adapterList, requireContext(), saveMap)
                 viewModel.clearWealth()
                 binding.selectorBoxRecyclerStepTwo.adapter = adapter
                 adapter.notifyDataSetChanged()
 
                 //Save Selection to TempSave
                 viewModel.characterTempSave.selectedClass = position
+                //HasSpells
                 viewModel.characterTempSave.hasSpells =
                     viewModel.characterTempSave.selectedClass !in listOf(0,1,5,6,7,8,9)
             }

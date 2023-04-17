@@ -9,8 +9,8 @@ data class PlayerCharacter(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     //Main Information
-    var characterName: String,
-    val characterLevels: Map<String,Int> = mapOf(
+    var characterName: String = "",
+    val characterLevels: MutableMap<String,Int> = mutableMapOf(
         "barbarian" to 0,
         "bard" to 0,
         "cleric" to 0,
@@ -24,21 +24,23 @@ data class PlayerCharacter(
         "warlock" to 0,
         "wizard" to 0
     ),
-    var race: String,
-    var background: String,
-    var hitPointsMax: Int,
-    var hitPointsCurrent: Int,
+    var race: String = "",
+    var subrace: String = "",
+    var alignment: String = "",
+    var background: String = "",
+    var hitPointsMax: Int = 0,
+    var hitPointsCurrent: Int = 0,
     var speed: Int = 30,
     //Abilities & Skills
     //Abilities
-    var strength: Int,
-    var dexterity: Int,
-    var constitution: Int,
-    var intelligence: Int,
-    var wisdom: Int,
-    var charisma: Int,
+    var strength: Int = 10,
+    var dexterity: Int = 10,
+    var constitution: Int = 10,
+    var intelligence: Int = 10,
+    var wisdom: Int = 10,
+    var charisma: Int = 10,
     //Skill Proficiencies
-    val savingThrows: Map<String,Boolean> = mapOf(
+    val savingThrows: MutableMap<String,Boolean> = mutableMapOf(
         "strength" to false,
         "dexterity" to false,
         "constitution" to false,
@@ -46,7 +48,7 @@ data class PlayerCharacter(
         "wisdom" to false,
         "charisma" to false,
     ),
-    val skillProficiencies: Map<String,Boolean> = mapOf(
+    val skillProficiencies: MutableMap<String,Boolean> = mutableMapOf(
         //STR Profs
         "Athletics" to false,
         //DEX Profs
@@ -81,7 +83,7 @@ data class PlayerCharacter(
     //Features & Traits
     val featureList: MutableList<Feature> = mutableListOf(),
     //Inventory
-    val money: Map<String,Int> = mapOf("Copper" to 0, "Silver" to 0,"Electrum" to 0, "Gold" to 0, "Platinum" to 0),
+    val money: MutableMap<String,Int> = mutableMapOf("Copper" to 0, "Silver" to 0,"Electrum" to 0, "Gold" to 0, "Platinum" to 0),
     val equipment: MutableList<Equipment> = mutableListOf(),
     //Resources & Tools
     var resources: MutableList<Resource> = mutableListOf(),
@@ -89,7 +91,7 @@ data class PlayerCharacter(
     var languages: MutableList<String> = mutableListOf(),
     //Health & Death
     var temporaryHp: Int = 0,
-    var hitDiceType: Int,
+    var hitDiceType: Int = 0,
     var hitDiceCurrent: Int = 1,
     val deathSaves: List<Boolean> = listOf(false,false,false,false,false,false), //3x Successes + 3x Failures
     //Bio

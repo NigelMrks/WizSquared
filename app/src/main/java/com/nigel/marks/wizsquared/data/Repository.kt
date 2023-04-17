@@ -1,16 +1,20 @@
 package com.nigel.marks.wizsquared.data
 
+import android.media.audiofx.DynamicsProcessing.Eq
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nigel.marks.wizsquared.data.db.SpellDatabase
 import com.nigel.marks.wizsquared.data.entities.Spell
+import com.nigel.marks.wizsquared.data.model.EqOptionsList
 import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.data.model.SelectorBox
 import com.nigel.marks.wizsquared.data.model.SpellResult
 import com.nigel.marks.wizsquared.data.remote.SpellAPI
+import com.squareup.moshi.subtypeOf
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 class Repository (private val database: SpellDatabase, private val spellApi: SpellAPI){
     //Spell List
@@ -23,559 +27,1097 @@ class Repository (private val database: SpellDatabase, private val spellApi: Spe
         "Lawful Neutral", "Neutral", "Chaotic Neutral",
         "Lawful Evil", "Neutral Evil", "Chaotic Evil"
     )
+    private val languages: List<String> = listOf(
+        "Common","Dwarvish","Elvish","Giant",
+        "Gnomish","Goblin","Halfling","Orc",
+        "Abyssal","Celestial","Draconic","Deep Speech",
+        "Infernal","Primordial","Sylvan","Undercommon"
+    )
+    private val skills: List<String> = listOf(
+        "Choose",
+        "Acrobatics", "Animal Handling", "Arcana",
+        "Athletics", "Deception", "History",
+        "Insight", "Intimidation", "Investigation",
+        "Medicine", "Nature", "Perception",
+        "Performance", "Persuasion", "Religion",
+        "Sleight of Hand", "Stealth", "Survival"
+    )
 
     //EquipmentLists
-    var eqBarbarian: List<List<Equipment>> = listOf(
-        listOf(
-            Equipment("Greataxe",1),
-            Equipment("Any Martial Melee Weapon",1)
+    val eqBarbarian: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Greataxe",1)
+            ),
+            b = listOf(
+                Equipment("Any Martial Melee Weapon",1)
+            )
         ),
-        listOf(
-            Equipment("Handaxe",2),
-            Equipment("Any Simple Weapon",1)
+        EqOptionsList(
+            a = listOf(
+                Equipment("Handaxe",2)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
         ),
-        listOf(
-            Equipment("Explorer's Pack",1),
-            Equipment("Javelin",4)
+        EqOptionsList(
+            a = listOf(
+                Equipment("Explorer's Pack",1),
+                Equipment("Javelin",4)
+            )
+        )
+    )
+    val eqBard: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Rapier",1)
+            ),
+            b = listOf(
+                Equipment("Longsword",1)
+            ),
+            c = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Lute",1)
+            ),
+            b = listOf(
+                Equipment("Any Musical Instrument",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Leather Armor",1),
+                Equipment("Dagger",1)
+            )
+        )
+    )
+    val eqCleric: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Mace",1)
+            ),
+            b = listOf(
+                Equipment("Warhammer",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Scale Mail",1)
+            ),
+            b = listOf(
+                Equipment("Leather Armor",1)
+            ),
+            c = listOf(
+                Equipment("Chain Mail,",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Light Crossbow",1),
+                Equipment("Crossbow Bolt",20)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Priest's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Shield",1),
+                Equipment("Holy Symbol",1)
+            )
+        )
+    )
+    val eqDruid: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Shield",1)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Scimitar",1),
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Leather Armor",1),
+                Equipment("Explorer's Pack",1),
+                Equipment("Druidic Focus",1)
+            )
+        )
+    )
+    val eqFighter: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Chain Mail",1)
+            ),
+            b = listOf(
+                Equipment("Leather Armor",1),
+                Equipment("Longbow",1),
+                Equipment("Arrow",20)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Any Martial Weapon",1),
+                Equipment("Shield",1)
+            ),
+            b = listOf(
+                Equipment("Any Martial Weapon",2)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Light Crossbow",1),
+                Equipment("Crossbow Bolts",20)
+            ),
+            b = listOf(
+                Equipment("Handaxe",2)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf()
+        )
+    )
+    val eqMonk: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Shortsword",1)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dart",10)
+            )
+        )
+    )
+    val eqPaladin: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Any Martial Weapon",1),
+                Equipment("Shield",1)
+            ),
+            b = listOf(
+                Equipment("Any Martial Weapon",2)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Javelin",5)
+            ),
+            b = listOf(
+                Equipment("Any Simple Melee Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Priest's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Chain Mail",1),
+                Equipment("Holy Symbol",1)
+            )
+        )
+    )
+    val eqRanger: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Scale Mail",1)
+            ),
+            b = listOf(
+                Equipment("Leather Armor",1 )
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Shortsword",2)
+            ),
+            b = listOf(
+                Equipment("Any Simple Melee Weapon",2)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Longbow",1),
+                Equipment("Arrow",20)
+            )
+        )
+    )
+    val eqRogue: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Rapier",1)
+            ),
+            b = listOf(
+                Equipment("Shortsword",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Shortbow",1),
+                Equipment("Arrow",20)
+            ),
+            b = listOf(
+                Equipment("Shortsword",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Burglar's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            ),
+            c = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Leather Armor",1),
+                Equipment("Dagger",2),
+                Equipment("Thieves' Tools",1)
+            )
+        )
+    )
+    val eqSorcerer: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Light Crossbow",1),
+                Equipment("Arrow",20)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Component Pouch",1)
+            ),
+            b = listOf(
+                Equipment("Arcane Focus",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Dagger",2)
+            )
+        )
+    )
+    val eqWarlock: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Light Crossbow",1),
+                Equipment("Crossbow Bolts",20)
+            ),
+            b = listOf(
+                Equipment("Any Simple Weapon",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Component Pouch",1)
+            ),
+            b = listOf(
+                Equipment("Arcane Focus",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Scholar's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Dungeoneer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Leather Armor",1),
+                Equipment("Any Simple Weapon",1),
+                Equipment("Dagger",2)
+            )
+        )
+    )
+    val eqWizard: List<EqOptionsList> = listOf(
+        EqOptionsList(
+            a = listOf(
+                Equipment("Quarterstaff",1)
+            ),
+            b = listOf(
+                Equipment("Dagger",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Component Pouch",1)
+            ),
+            b = listOf(
+                Equipment("Arcane Focus",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Scholar's Pack",1)
+            ),
+            b = listOf(
+                Equipment("Explorer's Pack",1)
+            )
+        ),
+        EqOptionsList(
+            a = listOf(
+                Equipment("Spellbook",1)
+            )
         )
     )
 
+
     //Starting Wealth
-    var noClassWealth: Pair<Int,Boolean> = Pair(0,false)
-    var barbarianWealth: Pair<Int,Boolean> = Pair(2,true)
-    var bardWealth: Pair<Int,Boolean> = Pair(5,true)
-    var clericWealth: Pair<Int,Boolean> = Pair(5,true)
-    var druidWealth: Pair<Int,Boolean> = Pair(2,true)
-    var fighterWealth: Pair<Int,Boolean> = Pair(5,true)
-    var monkWealth: Pair<Int,Boolean> = Pair(5,false)
-    var paladinWealth: Pair<Int,Boolean> = Pair(5,true)
-    var rangerWealth: Pair<Int,Boolean> = Pair(5,true)
-    var rogueWealth: Pair<Int,Boolean> = Pair(4,true)
-    var sorcererWealth: Pair<Int,Boolean> = Pair(3,true)
-    var warlockWealth: Pair<Int,Boolean> = Pair(4,true)
-    var wizardWealth: Pair<Int,Boolean> = Pair(4,true)
-    var classWealthList: List<Pair<Int,Boolean>> = listOf(
+    private val noClassWealth: Pair<Int,Boolean> = Pair(0,false)
+    private val barbarianWealth: Pair<Int,Boolean> = Pair(2,true)
+    private val bardWealth: Pair<Int,Boolean> = Pair(5,true)
+    private val clericWealth: Pair<Int,Boolean> = Pair(5,true)
+    private val druidWealth: Pair<Int,Boolean> = Pair(2,true)
+    private val fighterWealth: Pair<Int,Boolean> = Pair(5,true)
+    private val monkWealth: Pair<Int,Boolean> = Pair(5,false)
+    private val paladinWealth: Pair<Int,Boolean> = Pair(5,true)
+    private val rangerWealth: Pair<Int,Boolean> = Pair(5,true)
+    private val rogueWealth: Pair<Int,Boolean> = Pair(4,true)
+    private val sorcererWealth: Pair<Int,Boolean> = Pair(3,true)
+    private val warlockWealth: Pair<Int,Boolean> = Pair(4,true)
+    private val wizardWealth: Pair<Int,Boolean> = Pair(4,true)
+    val classWealthList: List<Pair<Int,Boolean>> = listOf(
         noClassWealth,barbarianWealth,bardWealth,clericWealth,druidWealth,fighterWealth,monkWealth,
         paladinWealth,rangerWealth,rogueWealth,sorcererWealth,warlockWealth,wizardWealth
     )
 
     //Lists of Race Attributes for Character Creation as SelectorBox Objects
-    var raceNoneSelected: List<SelectorBox> = listOf(
+    val raceDragonborn: List<SelectorBox> = listOf(
         SelectorBox(
-            "Racial Traits",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "The description of each race includes racial Traits that are Common to Members " +
-                        "of that race. The following entries appear among the Traits of most races."
-            )
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
         ),
         SelectorBox(
-            "Ability Score Increase",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Every race increases one or more of a character’s Ability Scores."
-            )
-        ),
-        SelectorBox(
-            "Age",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "The age entry notes the age when a member of the race is considered an adult, " +
-                        "as well as the race’s expected lifespan. This information can help you " +
-                        "decide how old your character is at the start of the game. You can " +
-                        "choose any age for your character, which could provide an explanation " +
-                        "for some of your Ability Scores. For example, if you play a young or " +
-                        "very old character, your age could explain a particularly low Strength " +
-                        "or Constitution score, while advanced age could account for a high " +
-                        "Intelligence or Wisdom."
-            )
-        ),
-        SelectorBox(
-            "Alignment",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Most races have tendencies toward certain alignments, described in this entry. " +
-                        "These are not binding for player Characters, but considering why your " +
-                        "dwarf is chaotic, for example, in defiance of lawful dwarf Society can " +
-                        "help you better define your character."
-            )
-        ),
-        SelectorBox(
-            "Size",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Characters of most races are Medium, a size category including Creatures that " +
-                        "are roughly 4 to 8 feet tall. Members of a few races are Small (between " +
-                        "2 and 4 feet tall), which means that certain rules of the game affect " +
-                        "them differently. The most important of these rules is that Small " +
-                        "Characters have trouble Wielding heavy Weapons, as explained in “Equipment.”"
-            )
-        ),
-        SelectorBox(
-            "Speed",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Your speed determines how far you can move when traveling ( “Adventuring”) and " +
-                        "Fighting (“Combat”)."
-            )
-        ),
-        SelectorBox(
-            "Languages",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "By virtue of your race, your character can speak, read, and write certain Languages."
-            )
-        ),
-        SelectorBox(
-            "Subraces",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Some races have Subraces. Members of a subrace have the Traits of the parent " +
-                        "race in addition to the Traits specified for their subrace. Relationships " +
-                        "among Subraces vary significantly from race to race and world to world."
-            )
+            title = "Draconic Ancestry",
+            listOfChoicesOne = listOf(
+                "Choose",
+                "Black",
+                "Blue",
+                "Brass",
+                "Bronze",
+                "Copper",
+                "Gold",
+                "Green",
+                "Red",
+                "Silver",
+                "White"
+            ),
+            key = "subrace"
         )
     )
-    var raceDragonborn: List<SelectorBox> = listOf()
-    var raceDwarf: List<SelectorBox> = listOf()
+    val raceDwarf: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Tool Proficiency",
+            listOfChoicesOne = listOf(
+                "Smith's Tools",
+                "Brewer's Supplies",
+                "Mason's Tools"
+            ),
+            key = "tool_prof"
+        ),
+        SelectorBox(
+            title = "Subrace",
+            listOfChoicesOne = listOf("Hill", "Mountain"),
+            key = "subrace"
+        )
+    )
+    val raceElf: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Subrace",
+            listOfChoicesOne = listOf("Dark","High","Wood"),
+            key = "subrace"
+        )
+    )
+    val raceGnome: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Subrace",
+            listOfChoicesOne = listOf("Forest","Rock"),
+            key = "subrace"
+        )
+    )
+    val raceHalfElf: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Ability Score Improvement",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                "Choose",
+                "Strength",
+                "Dexterity",
+                "Constitution",
+                "Intelligence",
+                "Wisdom"
+            ),
+            listOfChoicesTwo = listOf(
+                "Choose",
+                "Strength",
+                "Dexterity",
+                "Constitution",
+                "Intelligence",
+                "Wisdom"
+            ),
+            key = "asi"
+        ),
+        SelectorBox(
+            title = "Skill Versatility",
+            numberOfChoices = 2,
+            listOfChoicesOne = skills,
+            listOfChoicesTwo = skills,
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Extra Language",
+            listOfChoicesOne = languages,
+            key = "language"
+        )
+    )
+    val raceHalfOrc: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        )
+    )
+    val raceHalfling: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Subrace",
+            listOfChoicesOne = listOf("Lightfoot","Stout"),
+            key = "subrace"
+        )
+    )
+    val raceHuman: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        ),
+        SelectorBox(
+            title = "Extra Language",
+            listOfChoicesOne = languages,
+            key = "language"
+        )
+    )
+    val raceTiefling: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Alignment",
+            listOfChoicesOne = alignments,
+            key = "alignment"
+        )
+    )
+    //Maps to Save Selection (Race)
+    var raceMapDragonborn: MutableMap<String,String> = mutableMapOf()
+    var raceMapDwarf: MutableMap<String,String> = mutableMapOf()
+    var raceMapElf: MutableMap<String,String> = mutableMapOf()
+    var raceMapGnome: MutableMap<String,String> = mutableMapOf()
+    var raceMapHalfElf: MutableMap<String,String> = mutableMapOf()
+    var raceMapHalfOrc: MutableMap<String,String> = mutableMapOf()
+    var raceMapHalfling: MutableMap<String,String> = mutableMapOf()
+    var raceMapHuman: MutableMap<String,String> = mutableMapOf()
+    var raceMapTiefling: MutableMap<String,String> = mutableMapOf()
+    val raceSaveMaps: List<MutableMap<String,String>> = listOf(
+        raceMapDragonborn,raceMapDwarf,raceMapElf,
+        raceMapGnome,raceMapHalfElf,raceMapHalfOrc,
+        raceMapHalfling,raceMapHuman,raceMapTiefling
+    )
 
     //Lists of Class Attributes for Character Creation as SelectorBoxObjects
-    var classNoneSelected: List<SelectorBox> = listOf(
+    val classBarbarian: List<SelectorBox> = listOf(
         SelectorBox(
-            "Class",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Your Class will determine the playstyle and initial bulk of abilities of your " +
-                        "character. It determines if you are more suited for Martial Combat, " +
-                        "Spellcasting or else and determines from what source your Character " +
-                        "draws their power. \n \n" +
-                        "A character doesn't necessarily only have one class. For further " +
-                        "information on this look inti Multi-Classing options."
-            )
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[2],skills[4],
+                skills[8],skills[11],skills[12],
+                skills[18]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[2],skills[4],
+                skills[8],skills[11],skills[12],
+                skills[18]
+            ),
+            key = "skill"
         ),
         SelectorBox(
-            "Subclass",
-            false,
-            listOf(),
-            false,
-            listOf(
-                "Every class has the choice between multiple subclasses. Subclasses can " +
-                        "seperate a character from other members of the same Class by detailing " +
-                        "the source of your abilities. From what School of Magic your Wizard has " +
-                        "studied intensely to what God your Cleric follows. \n \n" +
-                        "Characters gain Subclass Features at specified levels taken in a " +
-                        "particular Class and choose their Subclass sometime at level 1,2 or 3 " +
-                        "(depending on Class)"
-            )
+            title = "Equipment",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf("Greataxe","Any Martial Melee Weapon"),
+            listOfChoicesTwo = listOf("2 Handaxes","Any Simple Weapon"),
+            key = "equipment"
         )
     )
-    var classBarbarian: List<SelectorBox> = listOf()
+    val classBard: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 3,
+            listOfChoicesOne = skills,
+            listOfChoicesTwo = skills,
+            listOfChoicesThree = skills,
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Rapier","Longsword","Any Simple Weapon"),
+            listOfChoicesTwo = listOf("Diplomat's Pack","Entertainer's Pack"),
+            listOfChoicesThree = listOf("Lute","Any Musical Instrument"),
+            key = "equipment"
+        )
+    )
+    val classCleric: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[6],skills[7],
+                skills[10],skills[14],skills[15]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[6],skills[7],
+                skills[10],skills[14],skills[15]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 4,
+            listOfChoicesOne = listOf("Mace","Warhammer"),
+            listOfChoicesTwo = listOf("Scale Mail","Leather Armor","Chain Mail"),
+            listOfChoicesThree = listOf("Light Crossbow + 20 bolts","Any Simple Weapon"),
+            listOfChoicesFour = listOf("Priest's Pack","Explorer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Divine Domain",
+            listOfChoicesOne = listOf(
+                "Choose","Knowledge","Life","Light",
+                "Nature","Tempest","Trickery","War"
+            ),
+            key = "subclass"
+        )
+    )
+    val classDruid: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[2],skills[3],
+                skills[7],skills[10],skills[11],
+                skills[12],skills[15],skills[18]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[2],skills[3],
+                skills[7],skills[10],skills[11],
+                skills[12],skills[15],skills[18]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf("Wooden Shield","Any Simple Weapon"),
+            listOfChoicesTwo = listOf("Scimitar","Any Simple Melee Weapon"),
+            key = "equipment"
+        )
+    )
+    val classFighter: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[1],skills[2],
+                skills[4],skills[6],skills[7],
+                skills[8],skills[12],skills[18]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[1],skills[2],
+                skills[4],skills[6],skills[7],
+                skills[8],skills[12],skills[18]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 4,
+            listOfChoicesOne = listOf("Chain Mail","Leather Armor + Longbow + 20 Arrows"),
+            listOfChoicesTwo = listOf("Any Martial Weapon + Shield","Any 2 Martial Weapons"),
+            listOfChoicesThree = listOf("Light Crossbow + 20 Bolts","2 Handaxes"),
+            listOfChoicesFour = listOf("Dungeoneer's Pack","Explorer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Fighting Style",
+            listOfChoicesOne = listOf(
+                "Archery","Defense","Dueling",
+                "Great Weapon Fighting", "Protection",
+                "Two-Weapon Fighting"
+            ),
+            key = "fighting_style"
+        )
+    )
+    val classMonk: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[1],skills[4],
+                skills[6],skills[7],skills[15],
+                skills[17]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[1],skills[4],
+                skills[6],skills[7],skills[15],
+                skills[17]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf("Shortsword","Any Simple Weapon"),
+            listOfChoicesTwo = listOf("Dungeoneer's Pack","Explorer's Pack"),
+            key = "equipment"
+        )
+    )
+    val classPaladin: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[4],skills[7],
+                skills[8],skills[10],skills[14],
+                skills[15],
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[4],skills[7],
+                skills[8],skills[10],skills[14],
+                skills[15],
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Any Martial Weapon + Shield","Any 2 Martial Weapons"),
+            listOfChoicesTwo = listOf("5 Javelins","Any Simple Melee Weapon"),
+            listOfChoicesThree = listOf("Priest's Pack","Explorer's Pack"),
+            key = "equipment"
+        )
+    )
+    val classRanger: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf(
+                skills[0],skills[2],skills[4],
+                skills[7],skills[9],skills[11],
+                skills[12],skills[17],skills[18]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[2],skills[4],
+                skills[7],skills[9],skills[11],
+                skills[12],skills[17],skills[18]
+            ),
+            listOfChoicesThree = listOf(
+                skills[0],skills[2],skills[4],
+                skills[7],skills[9],skills[11],
+                skills[12],skills[17],skills[18]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Scale Mail","Leather Armor"),
+            listOfChoicesTwo = listOf("2 Shortswords","2 Simple Melee Weapon"),
+            listOfChoicesThree = listOf("Dungeoneer's Pack","Explorer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Favored Enemy",
+            listOfChoicesOne = listOf(
+                "Aberrations","Beasts","Celestials","Constructs",
+                "Dragons","Elementals","Fey","Fiends","Giants",
+                "Monstrosities","Oozes","Plants","Undead","2 Humanoid Races"
+            ),
+            key = "fav_enemy"
+        ),
+        SelectorBox(
+            title = "Natural Explorer",
+            listOfChoicesOne = listOf(
+                "Arctic","Coast","Desert","Forest",
+                "Grassland","Mountain","Swamp","Underdark"
+            ),
+            key = "fav_terrain"
+        )
+    )
+    val classRogue: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 4,
+            listOfChoicesOne = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            listOfChoicesThree = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            listOfChoicesFour = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Rapier","Shortsword"),
+            listOfChoicesTwo = listOf("Shortbow + 20 Arrows","Shortsword"),
+            listOfChoicesThree = listOf("Burglar's Pack","Dungeoneer's Pack","Explorer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Expertise",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[1],skills[4],
+                skills[5],skills[7],skills[8],
+                skills[9],skills[12],skills[13],
+                skills[14],skills[16],skills[17]
+            ),
+            key = "expertise"
+        )
+    )
+    val classSorcerer: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[3],skills[5],
+                skills[7],skills[8],skills[14],
+                skills[15]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[3],skills[5],
+                skills[7],skills[8],skills[14],
+                skills[15]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Light Crossbow + 20 bolts","Any Simple Weapon"),
+            listOfChoicesTwo = listOf("Component Pouch","Arcane Focus"),
+            listOfChoicesFour = listOf("Dungeoneer's Pack","Explorer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Sorcerous Origin",
+            listOfChoicesOne = listOf("Choose", "Draconic Bloodline", "Wild Magic"),
+            key = "subclass"
+        )
+    )
+    val classWarlock: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[3],skills[5],
+                skills[6],skills[8],skills[9],
+                skills[11],skills[15]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[3],skills[5],
+                skills[6],skills[8],skills[9],
+                skills[11],skills[15]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Light Crossbow + 20 bolts","Any Simple Weapon"),
+            listOfChoicesTwo = listOf("Component's Pouch","Arcane Focus"),
+            listOfChoicesThree = listOf("Scholar's Pack","Dungeoneer's Pack"),
+            key = "equipment"
+        ),
+        SelectorBox(
+            title = "Otherworldly Patron",
+            listOfChoicesOne = listOf("Archfey","Fiend","Great Old One"),
+            key = "subclass"
+        )
+    )
+    val classWizard: List<SelectorBox> = listOf(
+        SelectorBox(
+            title = "Skill Proficiency",
+            numberOfChoices = 2,
+            listOfChoicesOne = listOf(
+                skills[0],skills[3],skills[6],
+                skills[7],skills[9],skills[10],
+                skills[15]
+            ),
+            listOfChoicesTwo = listOf(
+                skills[0],skills[3],skills[6],
+                skills[7],skills[9],skills[10],
+                skills[15]
+            ),
+            key = "skill"
+        ),
+        SelectorBox(
+            title = "Equipment",
+            numberOfChoices = 3,
+            listOfChoicesOne = listOf("Quarterstaff","Dagger"),
+            listOfChoicesTwo = listOf("Component Pouch","Arcane Focus"),
+            listOfChoicesThree = listOf("Scholar's Pack","Explorer's Pack"),
+            key = "equipment"
+        )
+    )
+    //Maps to Save Selection (Class)
+    var classMapBarbarian: MutableMap<String,String> = mutableMapOf()
+    var classMapBard: MutableMap<String,String> = mutableMapOf()
+    var classMapCleric: MutableMap<String,String> = mutableMapOf()
+    var classMapDruid: MutableMap<String,String> = mutableMapOf()
+    var classMapFighter: MutableMap<String,String> = mutableMapOf()
+    var classMapMonk: MutableMap<String,String> = mutableMapOf()
+    var classMapPaladin: MutableMap<String,String> = mutableMapOf()
+    var classMapRanger: MutableMap<String,String> = mutableMapOf()
+    var classMapRogue: MutableMap<String,String> = mutableMapOf()
+    var classMapSorcerer: MutableMap<String,String> = mutableMapOf()
+    var classMapWarlock: MutableMap<String,String> = mutableMapOf()
+    var classMapWizard: MutableMap<String,String> = mutableMapOf()
+    val classSaveMaps: List<MutableMap<String,String>> = listOf(
+        classMapBarbarian,classMapBard,classMapCleric,
+        classMapDruid,classMapFighter,classMapMonk,
+        classMapPaladin,classMapRanger,classMapRogue,
+        classMapSorcerer,classMapWarlock,classMapWizard
+    )
 
-    fun loadLists() {
-        //Selector Boxes
+    fun resetMaps() {
         //races
-        raceDragonborn = listOf(
-            SelectorBox(
-                "Ability Score Increase",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Charisma +1, Strength +2"
-                )
-            ),
-            SelectorBox(
-                "Alignment",
-                true,
-                alignments,
-                false,
-                listOf(""),
-                false
-            ),
-            SelectorBox(
-                "Creature Type",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Humanoid"
-                )
-            ),
-            SelectorBox(
-                "Size",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Medium"
-                )
-            ),
-            SelectorBox(
-                "Speed",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "30 feet"
-                )
-            ),
-            SelectorBox(
-                "Draconic Ancestry",
-                true,
-                listOf(
-                    "Choose",
-                    "Black Dragon Ancestry",
-                    "Blue Dragon Ancestry",
-                    "Brass Dragon Ancestry",
-                    "Bronze Dragon Ancestry",
-                    "Copper Dragon Ancestry",
-                    "Gold Dragon Ancestry",
-                    "Green Dragon Ancestry",
-                    "Red Dragon Ancestry",
-                    "Silver Dragon Ancestry",
-                    "White Dragon Ancestry"
-                ),
-                true,
-                listOf(
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "None selected.",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Acid. \n" +
-                            "Breath Weapon: 5 by 30 ft. line (Dex. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Lightning. \n" +
-                            "Breath Weapon: 5 by 30 ft. line (Dex. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Fire. \n" +
-                            "Breath Weapon: 5 by 30 ft. line (Dex. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Lightning. \n" +
-                            "Breath Weapon: 5 by 30 ft. line (Dex. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Acid. \n" +
-                            "Breath Weapon: 5 by 30 ft. line (Dex. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Fire. \n" +
-                            "15 ft cone (Con. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Poison. \n" +
-                            "15 ft cone (Con. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Fire. \n" +
-                            "15 ft cone (Con. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Cold. \n" +
-                            "15 ft cone (Con. save)",
-                    "You have draconic ancestry. Choose one type of dragon from the Draconic " +
-                            "Ancestry table. Your breath weapon and damage resistance are " +
-                            "determined by the dragon type, as follows: \n\n" +
-                            "Damage Type: Cold. \n" +
-                            "15 ft cone (Con. save)",
-                )
-            ),
-            SelectorBox(
-                "Languages",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Languages\n" +
-                            "You can speak, read, and write Common and Draconic. Draconic is thought " +
-                            "to be one of the oldest languages and is often used in the study of " +
-                            "magic. The language sounds harsh to most other creatures and includes " +
-                            "numerous hard consonants and sibilants.\n" +
-                            "\n" +
-                            "Language Proficiencies:\n" +
-                            "Common, Draconic"
-                )
-            )
-        )
-        raceDwarf = listOf(
-            SelectorBox(
-                "Ability Score Increase",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Constitution +2"
-                )
-            ),
-            SelectorBox(
-                "Alignment",
-                true,
-                alignments,
-                false,
-                listOf(""),
-                false
-            ),
-            SelectorBox(
-                "Creature Type",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Humanoid"
-                )
-            ),
-            SelectorBox(
-                "Size",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Medium"
-                )
-            ),
-            SelectorBox(
-                "Speed",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "25 feet"
-                )
-            ),
-            SelectorBox(
-                "Weapon Proficiencies",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Battleaxe, Handaxe, Light Hammer, Warhammer"
-                )
-            ),
-            SelectorBox(
-                "Tool Proficiencies",
-                true,
-                listOf(
-                    "Choose",
-                    "Smith's Tools",
-                    "Brewer's Supplies",
-                    "Mason's Tools"
-                ),
-                false,
-                listOf(""),
-                false
-            ),
-            SelectorBox(
-                "Languages",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Languages\n" +
-                            "You can speak, read, and write Common and Dwarvish. Dwarvish is full of " +
-                            "hard consonants and guttural sounds, and those characteristics spill " +
-                            "over into whatever other language a dwarf might speak.\n" +
-                            "\n" +
-                            "Language Proficiencies:\n" +
-                            "Common, Dwarvish"
-                )
-            ),
-            SelectorBox(
-                "Speed",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Your speed is not reduced by wearing heavy armor."
-                )
-            ),
-            SelectorBox(
-                "Stonecunning",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Whenever you make an Intelligence (History) check related to the origin of " +
-                            "stonework, you are considered proficient in the History skill and " +
-                            "add double your proficiency bonus to the check, instead of your " +
-                            "normal proficiency bonus."
-                )
-            ),
-            SelectorBox(
-                "Dwarven Resilience",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "You have advantage on saving throws against poison, and you have resistance " +
-                            "against poison damage"
-                )
-            ),
-            SelectorBox(
-                "Darkvision",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Accustomed to life underground, you have superior vision in dark and dim " +
-                            "conditions. You can see in dim light within 60 feet of you as if it " +
-                            "were bright light, and in darkness as if it were dim light. You can’t " +
-                            "discern color in darkness, only shades of gray."
-                )
-            ),
-            SelectorBox(
-                "Subrace",
-                true,
-                listOf(
-                    "Choose",
-                    "Hill Dwarf"
-                ),
-                true,
-                listOf(
-                    "Please choose a Subrace.",
-                    "Subrace Ability Score Increase \n" +
-                            "Wisdom +1 \n\n" +
-                            "Dwarven Toughness \n" +
-                            "Your hit point maximum increases by 1, and it increases by 1" +
-                            "everytime you gain a level."
-                )
-            )
-        )
+        raceMapDragonborn["alignment"] = "Choose"
+        raceMapDragonborn["subrace"] = "Choose"
+
+        raceMapDwarf["alignment"] = "Choose"
+        raceMapDwarf["tool_prof"] = "Smith's Tools"
+        raceMapDwarf["subrace"] = "Choose"
+
+        raceMapElf["alignment"] = "Choose"
+        raceMapElf["subrace"] = "Choose"
+
+        raceMapGnome["alignment"] = "Choose"
+        raceMapGnome["subrace"] = "Choose"
+
+        raceMapHalfElf["alignment"] = "Choose"
+        raceMapHalfElf["asi:0"] = "Choose"
+        raceMapHalfElf["asi:1"] = "Choose"
+        raceMapHalfElf["skill:0"] = "Choose"
+        raceMapHalfElf["skill:1"] = "Choose"
+        raceMapHalfElf["language"] = "Choose"
+
+        raceMapHalfOrc["alignment"] = "Choose"
+
+        raceMapHalfling["alignment"] = "Choose"
+        raceMapHalfling["subrace"] = "Choose"
+
+        raceMapHuman["alignment"] = "Choose"
+        raceMapHuman["language"] = "Choose"
+
+        raceMapTiefling["alignment"] = "Choose"
 
         //classes
-        classBarbarian = listOf(
-            SelectorBox(
-                "Hit Points",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Hit Dice: 1d12 per Barbarian level\n" +
-                            "Hit Points at 1st Level: 12 + your Constitution modifier\n" +
-                            "Hit Points at Higher Levels: 1d12 (or 7) + your Constitution modifier " +
-                            "per Barbarian level after 1st"
-                )
-            ),
-            SelectorBox(
-                "Weapon Proficiencies",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Simple weapons, Martial weapons"
-                )
-            ),
-            SelectorBox(
-                "Armor Proficiencies",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "Light Armor, Medium Armor, Shields"
-                )
-            ),
-            SelectorBox(
-                "Skill Proficiencies",
-                true,
-                listOf(
-                    "Choose",
-                    "Animal Handling",
-                    "Athletics",
-                    "Intimidation",
-                    "Nature",
-                    "Perception",
-                    "Survival"
-                ),
-                false,
-                listOf(),
-                false,
-                2,
-                true
-            ),
-            SelectorBox(
-                "Rage",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "In battle, you fight with primal ferocity. On your turn, you can enter a rage " +
-                            "as a bonus action. While raging, you gain the following benefits if you " +
-                            "aren’t wearing heavy armor: -You have advantage on Strength checks and " +
-                            "Strength saving throws. -When you make a melee weapon attack using " +
-                            "Strength, you gain a bonus to the damage roll that increases as you " +
-                            "gain levels as a barbarian, as shown in the Rage Damage column of the " +
-                            "Barbarian table. -You have resistance to bludgeoning, piercing, and " +
-                            "slashing damage. If you are able to cast spells, you can’t cast them or " +
-                            "concentrate on them while raging. Your rage lasts for 1 minute. It " +
-                            "ends early if you are knocked unconscious or if your turn ends and you " +
-                            "haven’t attacked a hostile creature since your last turn or taken " +
-                            "damage since then. You can also end your rage on your turn as a bonus " +
-                            "action. Once you have raged the number of times shown for your barbarian " +
-                            "level in the Rages column of the Barbarian table, you must finish a long " +
-                            "rest before you can rage again."
-                )
-            ),
-            SelectorBox(
-                "Unarmored Defense",
-                false,
-                listOf(),
-                false,
-                listOf(
-                    "While you are not wearing any armor, your Armor Class equals 10 + your " +
-                            "Dexterity modifier + your Constitution modifier. You can use a shield " +
-                            "and still gain this benefit."
-                )
-            ),
-            SelectorBox(
-                "Equipment",
-                true,
-                listOf(
-                    "- A greataxe",
-                    "- Any martial melee weapon"
-                ),
-                false,
-                listOf(
-                    "- An explorer’s pack and four javelins"
-                ),
-                true,
-                2,
-                false,
-                listOf(
-                    "- Two handaxes",
-                    "- Any simple weapon"
-                )
-            )
-        )
+        classMapBarbarian["skill:0"] = "Choose"
+        classMapBarbarian["skill:1"] = "Choose"
+        classMapBarbarian["equipment:0"] = "0"
+        classMapBarbarian["equipment:1"] = "0"
+
+        classMapBard["skill:0"] = "Choose"
+        classMapBard["skill:1"] = "Choose"
+        classMapBard["skill:2"] = "Choose"
+        classMapBard["equipment:0"] = "0"
+        classMapBard["equipment:1"] = "0"
+        classMapBard["equipment:2"] = "0"
+
+        classMapCleric["skill:0"] = "Choose"
+        classMapCleric["skill:1"] = "Choose"
+        classMapCleric["equipment:0"] = "0"
+        classMapCleric["equipment:1"] = "0"
+        classMapCleric["equipment:2"] = "0"
+        classMapCleric["equipment:3"] = "0"
+        classMapCleric["subclass"] = "Choose"
+
+        classMapDruid["skill:0"] = "Choose"
+        classMapDruid["skill:1"] = "Choose"
+        classMapDruid["equipment:0"] = "0"
+        classMapDruid["equipment:1"] = "0"
+
+        classMapFighter["skill:0"] = "Choose"
+        classMapFighter["skill:1"] = "Choose"
+        classMapFighter["equipment:0"] = "0"
+        classMapFighter["equipment:1"] = "0"
+        classMapFighter["equipment:2"] = "0"
+        classMapFighter["equipment:3"] = "0"
+        classMapFighter["fighting_style"] = "Archery"
+
+        classMapMonk["skill:0"] = "Choose"
+        classMapMonk["skill:1"] = "Choose"
+        classMapMonk["equipment:0"] = "0"
+        classMapMonk["equipment:1"] = "0"
+
+        classMapPaladin["skill:0"] = "Choose"
+        classMapPaladin["skill:1"] = "Choose"
+        classMapPaladin["equipment:0"] = "0"
+        classMapPaladin["equipment:1"] = "0"
+        classMapPaladin["equipment:2"] = "0"
+
+        classMapRanger["skill:0"] = "Choose"
+        classMapRanger["skill:1"] = "Choose"
+        classMapRanger["skill:2"] = "Choose"
+        classMapRanger["equipment:0"] = "0"
+        classMapRanger["equipment:1"] = "0"
+        classMapRanger["equipment:2"] = "0"
+        classMapRanger["fav_enemy"] = "Aberrations"
+        classMapRanger["fav_terrain"] = "Arctic"
+
+        classMapRogue["skill:0"] = "Choose"
+        classMapRogue["skill:1"] = "Choose"
+        classMapRogue["skill:2"] = "Choose"
+        classMapRogue["skill:3"] = "Choose"
+        classMapRogue["equipment:0"] = "0"
+        classMapRogue["equipment:1"] = "0"
+        classMapRogue["equipment:2"] = "0"
+        classMapRogue["expertise:0"] = "Choose"
+        classMapRogue["expertise:1"] = "Choose"
+
+        classMapSorcerer["skill:0"] = "Choose"
+        classMapSorcerer["skill:1"] = "Choose"
+        classMapSorcerer["equipment:0"] = "0"
+        classMapSorcerer["equipment:1"] = "0"
+        classMapSorcerer["equipment:2"] = "0"
+        classMapSorcerer["subclass"] = "Choose"
+
+        classMapWarlock["skill:0"] = "Choose"
+        classMapWarlock["skill:1"] = "Choose"
+        classMapWarlock["equipment:0"] = "0"
+        classMapWarlock["equipment:1"] = "0"
+        classMapWarlock["equipment:2"] = "0"
+        classMapWarlock["subclass"] = "Choose"
+
+        classMapWizard["skill:0"] = "Choose"
+        classMapWizard["skill:1"] = "Choose"
+        classMapWizard["equipment:0"] = "0"
+        classMapWizard["equipment:1"] = "0"
+        classMapWizard["equipment:2"] = "0"
     }
 
     suspend fun loadSpellApi() {
@@ -585,14 +1127,12 @@ class Repository (private val database: SpellDatabase, private val spellApi: Spe
             var result: SpellResult? = null
             result = spellApi.retrofitService.getSpellResults(i)
             Log.d("MainViewModel", result.toString())
-            if (result?.next != null && result?.next  != "null") {
+            if (result.next != null && result.next != "null") {
                 i++
             }
             else morePages = false
-            if (result != null) {
-                for (spell in result?.results!!) {
-                    database.spellDao.insert(spell)
-                }
+            for (spell in result.results) {
+                database.spellDao.insert(spell)
             }
         }
         spellList = database.spellDao.getAll()

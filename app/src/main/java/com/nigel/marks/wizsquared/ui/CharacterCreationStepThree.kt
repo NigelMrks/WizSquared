@@ -99,7 +99,7 @@ class CharacterCreationStepThree : Fragment() {
         //Set initial Ability-Spinner Positions
         binding.ccStepThreeAbilitySpinner.setSelection(viewModel.characterTempSave.abilityMethod)
         for (i in 0..5) {
-            spinners[i].setSelection(viewModel.characterTempSave.abilityScores[i])
+            spinners[i].setSelection(viewModel.characterTempSave.abilityScoresRef[i])
         }
 
         //Roll-Button
@@ -222,12 +222,12 @@ class CharacterCreationStepThree : Fragment() {
         )
         for (spinner in spinners) {
             if (spinners.indexOf(spinner) != index && spinners[index].selectedItem == spinner.selectedItem) {
-                spinner.setSelection(viewModel.characterTempSave.abilityScores[index])
-                viewModel.characterTempSave.abilityScores[spinners.indexOf(spinner)] =
-                    viewModel.characterTempSave.abilityScores[index]
+                spinner.setSelection(viewModel.characterTempSave.abilityScoresRef[index])
+                viewModel.characterTempSave.abilityScoresRef[spinners.indexOf(spinner)] =
+                    viewModel.characterTempSave.abilityScoresRef[index]
             }
         }
-        viewModel.characterTempSave.abilityScores[index] = position
+        viewModel.characterTempSave.abilityScoresRef[index] = position
     }
 
     //to prevent memory leakage
