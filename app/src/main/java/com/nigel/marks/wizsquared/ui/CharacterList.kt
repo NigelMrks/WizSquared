@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.R
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nigel.marks.wizsquared.MainViewModel
+import com.nigel.marks.wizsquared.adapter.CharacterAdapter
+import com.nigel.marks.wizsquared.adapter.EquipmentAdapter
 import com.nigel.marks.wizsquared.databinding.FragmentCharacterListBinding
 
 class CharacterList : Fragment() {
@@ -25,11 +28,18 @@ class CharacterList : Fragment() {
         _binding = FragmentCharacterListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //code goes here
+        viewModel.viewedPlayerCharacter = viewModel.emptyPlayerCharacter
+
+        // Create New Character Button
         binding.listNewButton.setOnClickListener {
             viewModel.repository.resetMaps()
             findNavController().navigate(com.nigel.marks.wizsquared.R.id.home_to_character_creation)
         }
+
+        //RecyclerViewAdapter
+        binding.characterRecycler.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = CharacterAdapter(viewModel.repository.characterList)
+        binding.characterRecycler.adapter = adapter
 
         return view
     }

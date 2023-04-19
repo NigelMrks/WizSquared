@@ -12,13 +12,15 @@ import com.nigel.marks.wizsquared.data.model.Equipment
 import com.nigel.marks.wizsquared.data.model.Feature
 import com.nigel.marks.wizsquared.data.remote.SpellAPI
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = getDatabase(application)
     val repository = Repository(database, SpellAPI)
-    val spellList: LiveData<List<Spell>> = repository.spellList
     var characterTempSave: CharacterCreationTempSave = CharacterCreationTempSave()
+    var emptyPlayerCharacter = PlayerCharacter()
+    var viewedPlayerCharacter = emptyPlayerCharacter
 
     fun resetCharacterTempSave() {
         characterTempSave = CharacterCreationTempSave()
@@ -192,17 +194,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (characterTempSave.selectedRace != 0) {
             newCharacter.race = raceList[characterTempSave.selectedRace-1]
         }
+        if (newCharacter.race != "") parseRaceTraits(newCharacter)
 
         //Class
         var selClass = ""
         if (characterTempSave.selectedClass != 0) {
             selClass = classList[characterTempSave.selectedClass-1]
+            newCharacter.selClass = selClass.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(
+                    Locale.getDefault()
+                ) else it.toString()
+            }
         }
-        if (newCharacter.characterLevels.contains(selClass)) {
-            newCharacter.characterLevels[selClass] = 1
-        }
+        if (newCharacter.selClass != "") parseClassTraits(newCharacter)
+
 
         //Scores (Initial)
+        /*
         for (score in characterTempSave.rolledAbilities) {
             when (characterTempSave.abilityScoresRef[characterTempSave.rolledAbilities.indexOf(score)]) {
                 0 -> newCharacter.strength += score
@@ -213,6 +221,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 5 -> newCharacter.charisma += score
             }
         }
+        */
+        newCharacter.strength += 15
+        newCharacter.dexterity += 14
+        newCharacter.constitution += 13
+        newCharacter.intelligence += 12
+        newCharacter.wisdom += 10
+        newCharacter.charisma += 8
+
+        //Background
+        newCharacter.background = characterTempSave.backgroundName
 
         //Hit Dice Type
         when (selClass) {
@@ -286,9 +304,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             "Half-Orc","Halfling","Human","Tiefling"
         )
         val saveMaps = repository.raceSaveMaps
-        val keyList = listOf(
-            "alignment","tool_prof","skill:0","skill:1","language"
-        )
 
         val saveMap = saveMaps[raceList.indexOf(newCharacter.race)]
 
@@ -632,6 +647,81 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         )
                     )
                 }
+            }
+        }
+    }
+
+    private fun parseClassTraits(newCharacter: PlayerCharacter) {
+        val classList = listOf(
+            "Barbarian","Bard","Cleric","Druid",
+            "Fighter","Monk","Paladin","Ranger",
+            "Rogue","Sorcerer","Warlock","Wizard"
+        )
+        val saveMaps = repository.classSaveMaps
+        val keyList = listOf(
+            "skill:0","skill:1","skill:2","skill:3",
+            "subclass","fighting_style","fav_enemy",
+            "fav_terrain","expertise"
+        )
+        val saveMap = saveMaps[classList.indexOf(newCharacter.selClass)]
+
+        //Parse Skill Proficiencies
+        for (i in 0..3) {
+            val key = "skill:$i"
+            if (saveMap[key] != null) {
+                newCharacter.skillProficiencies[saveMap[key]!!] = true
+            }
+        }
+
+        //Parse Subclass
+        if (saveMap["subclass"] != null) {
+            newCharacter.subclass = saveMap["subclass"]!!
+        }
+
+        //Parse Class Specifics & Features
+        when (newCharacter.selClass) {
+            classList[0] -> {
+                newCharacter.featureList.addAll(
+                    listOf(
+                        Feature(
+                            name = "Rage",
+                            source = "Class: Barbarian",
+                            desc = "In battle, you fight with primal ferocity. On your turn, you " +
+                                    "can enter a rage as a bonus action.\n" +
+                                    "\n" +
+                                    "While raging, you gain the following benefits if you aren't " +
+                                    "wearing heavy armor:\n" +
+                                    "\n" +
+                                    "You have advantage on Strength checks and Strength saving " +
+                                    "throws.\n" +
+                                    "When you make a melee weapon attack using Strength, you " +
+                                    "gain a bonus to the damage roll that increases as you gain " +
+                                    "levels as a barbarian, as shown in the Rage Damage column " +
+                                    "of the Barbarian table.\n" +
+                                    "You have resistance to bludgeoning, piercing, and slashing " +
+                                    "damage.\n" +
+                                    "If you are able to cast spells, you can't cast them or " +
+                                    "concentrate on them while raging.\n" +
+                                    "\n" +
+                                    "Your rage lasts for 1 minute. It ends early if you are " +
+                                    "knocked unconscious or if your turn ends and you haven't " +
+                                    "attacked a hostile creature since your last turn or taken " +
+                                    "damage since then. You can also end your rage on your turn " +
+                                    "as a bonus action.\n" +
+                                    "\n" +
+                                    "Once you have raged the number of times shown for your " +
+                                    "barbarian level in the Rages column of the Barbarian table, " +
+                                    "you must finish a long rest before you can rage again."
+                        ),
+                        Feature(
+                            name = "Unarmored Defense",
+                            source = "Class: Barbarian",
+                            desc = "While you are not wearing any armor, your armor class " +
+                                    "equals 10 + your Dexterity modifier + your Constitution " +
+                                    "modifier. You can use a shield and still gain this benefit."
+                        )
+                    )
+                )
             }
         }
     }

@@ -10,20 +10,8 @@ data class PlayerCharacter(
     val id: Int = 0,
     //Main Information
     var characterName: String = "",
-    val characterLevels: MutableMap<String,Int> = mutableMapOf(
-        "barbarian" to 0,
-        "bard" to 0,
-        "cleric" to 0,
-        "druid" to 0,
-        "fighter" to 0,
-        "monk" to 0,
-        "paladin" to 0,
-        "ranger" to 0,
-        "rogue" to 0,
-        "sorcerer" to 0,
-        "warlock" to 0,
-        "wizard" to 0
-    ),
+    var selClass: String = "",
+    var subclass: String = "",
     var race: String = "",
     var subrace: String = "",
     var alignment: String = "",
@@ -33,12 +21,12 @@ data class PlayerCharacter(
     var speed: Int = 30,
     //Abilities & Skills
     //Abilities
-    var strength: Int = 10,
-    var dexterity: Int = 10,
-    var constitution: Int = 10,
-    var intelligence: Int = 10,
-    var wisdom: Int = 10,
-    var charisma: Int = 10,
+    var strength: Int = 0,
+    var dexterity: Int = 0,
+    var constitution: Int = 0,
+    var intelligence: Int = 0,
+    var wisdom: Int = 0,
+    var charisma: Int = 0,
     //Skill Proficiencies
     val savingThrows: MutableMap<String,Boolean> = mutableMapOf(
         "strength" to false,

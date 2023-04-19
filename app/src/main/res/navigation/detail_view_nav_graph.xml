@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_view_nav_graph"
+    app:startDestination="@id/detailViewAbilitiesAndSkills">
+    <fragment
+        android:id="@+id/detailViewAbilitiesAndSkills"
+        android:name="com.nigel.marks.wizsquared.ui.DetailViewAbilitiesAndSkills"
+        android:label="fragment_detail_view_abilities_and_skills"
+        tools:layout="@layout/fragment_detail_view_abilities_and_skills" >
+        <action
+            android:id="@+id/dv0dv1"
+            app:destination="@id/detailViewFeatures" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailViewEquipment"
+        android:name="com.nigel.marks.wizsquared.ui.DetailViewEquipment"
+        android:label="fragment_detail_view_equipment"
+        tools:layout="@layout/fragment_detail_view_equipment" >
+        <action
+            android:id="@+id/dv2dv3"
+            app:destination="@id/detailViewBioInfo" />
+        <action
+            android:id="@+id/dv2dv1"
+            app:destination="@id/detailViewFeatures" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailViewFeatures"
+        android:name="com.nigel.marks.wizsquared.ui.DetailViewFeatures"
+        android:label="fragment_detail_view_features"
+        tools:layout="@layout/fragment_detail_view_features" >
+        <action
+            android:id="@+id/dv1dv2"
+            app:destination="@id/detailViewEquipment" />
+        <action
+            android:id="@+id/dv1dv0"
+            app:destination="@id/detailViewAbilitiesAndSkills" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailViewBioInfo"
+        android:name="com.nigel.marks.wizsquared.ui.DetailViewBioInfo"
+        android:label="fragment_detail_view_bio_info"
+        tools:layout="@layout/fragment_detail_view_bio_info" >
+        <action
+            android:id="@+id/dv3dv2"
+            app:destination="@id/detailViewEquipment" />
+    </fragment>
+</navigation>

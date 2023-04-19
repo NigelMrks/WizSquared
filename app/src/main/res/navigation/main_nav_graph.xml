@@ -13,6 +13,9 @@
         <action
             android:id="@+id/home_to_character_creation"
             app:destination="@id/characterCreationStepOne" />
+        <action
+            android:id="@+id/home_to_detail_view"
+            app:destination="@id/detailView" />
     </fragment>
     <fragment
         android:id="@+id/characterCreationStepOne"
@@ -118,7 +121,27 @@
     </fragment>
     <fragment
         android:id="@+id/characterCreationReview"
-        android:name="com.nigel.marks.wizsquared.CharacterCreationReview"
+        android:name="com.nigel.marks.wizsquared.ui.CharacterCreationReview"
         android:label="fragment_character_creation_review"
-        tools:layout="@layout/fragment_character_creation_review" />
+        tools:layout="@layout/fragment_character_creation_review" >
+        <action
+            android:id="@+id/review_back"
+            app:destination="@id/characterCreationStepSeven" />
+        <action
+            android:id="@+id/review_final"
+            app:destination="@id/characterList" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailView"
+        android:name="com.nigel.marks.wizsquared.ui.DetailView"
+        android:label="fragment_detail_view"
+        tools:layout="@layout/fragment_detail_view" >
+        <argument
+            android:name="character_index"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/detailview_to_home"
+            app:destination="@id/characterList" />
+    </fragment>
 </navigation>

@@ -1,14 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CharacterCreationReview">
+    android:background="@color/dark_gray"
+    tools:context=".ui.CharacterCreationReview">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/str_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/str_text"
+        app:layout_constraintStart_toStartOf="@+id/str_text"
+        app:layout_constraintTop_toBottomOf="@+id/str_text"
+        tools:text="10" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/wis_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/wis_title"
+        app:layout_constraintStart_toStartOf="@+id/wis_title"
+        app:layout_constraintTop_toBottomOf="@+id/wis_title"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/cha_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="CHA"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/con_title"
+        app:layout_constraintStart_toStartOf="@+id/con_title"
+        app:layout_constraintTop_toBottomOf="@+id/con_score" />
+
+    <TextView
+        android:id="@+id/wis_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="WIS"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/dex_title"
+        app:layout_constraintStart_toStartOf="@+id/dex_title"
+        app:layout_constraintTop_toBottomOf="@+id/dex_score" />
+
+    <TextView
+        android:id="@+id/fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Character Review"
+        android:textColor="@color/text_beige"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Name:"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_title" />
+
+    <TextView
+        android:id="@+id/character_name_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/background_text"
+        app:layout_constraintTop_toTopOf="@+id/name_title"
+        tools:text="character_name" />
+
+    <TextView
+        android:id="@+id/race_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Race:"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/name_title"
+        app:layout_constraintTop_toBottomOf="@+id/name_title" />
+
+    <TextView
+        android:id="@+id/character_race_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/character_name_text"
+        app:layout_constraintTop_toTopOf="@+id/race_title"
+        tools:text="(subrace) race" />
+
+    <TextView
+        android:id="@+id/class_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Class:"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/race_title"
+        app:layout_constraintTop_toBottomOf="@+id/race_title" />
+
+    <TextView
+        android:id="@+id/character_class_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/character_race_text"
+        app:layout_constraintTop_toTopOf="@+id/class_title"
+        tools:text="(subclass) class" />
+
+    <TextView
+        android:id="@+id/equip_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Equip.:"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/class_title"
+        app:layout_constraintTop_toBottomOf="@+id/class_title" />
+
+    <TextView
+        android:id="@+id/eqmethod_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/character_class_text"
+        app:layout_constraintTop_toBottomOf="@+id/character_class_text"
+        tools:text="equipment method" />
+
+    <TextView
+        android:id="@+id/background_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Background:"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/equip_title"
+        app:layout_constraintTop_toBottomOf="@+id/equip_title" />
+
+    <TextView
+        android:id="@+id/background_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/background_title"
+        app:layout_constraintTop_toTopOf="@+id/background_title"
+        tools:text="background_name" />
+
+    <TextView
+        android:id="@+id/str_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
+        android:text="STR"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/background_title" />
+
+    <TextView
+        android:id="@+id/int_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="INT"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/str_text"
+        app:layout_constraintStart_toStartOf="@+id/str_text"
+        app:layout_constraintTop_toBottomOf="@+id/str_score" />
+
+    <TextView
+        android:id="@+id/con_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:text="CON"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/str_text" />
+
+    <TextView
+        android:id="@+id/dex_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DEX"
+        android:textColor="@color/text_beige"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/con_title"
+        app:layout_constraintStart_toEndOf="@+id/str_text"
+        app:layout_constraintTop_toTopOf="@+id/str_text" />
+
+    <TextView
+        android:id="@+id/cha_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/cha_title"
+        app:layout_constraintStart_toStartOf="@+id/cha_title"
+        app:layout_constraintTop_toBottomOf="@+id/cha_title"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/int_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/int_title"
+        app:layout_constraintStart_toStartOf="@+id/int_title"
+        app:layout_constraintTop_toBottomOf="@+id/int_title"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/dex_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/dex_title"
+        app:layout_constraintStart_toStartOf="@+id/dex_title"
+        app:layout_constraintTop_toBottomOf="@+id/dex_title"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/con_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/con_title"
+        app:layout_constraintStart_toStartOf="@+id/con_title"
+        app:layout_constraintTop_toBottomOf="@+id/con_title"
+        tools:text="10" />
+
+    <Button
+        android:id="@+id/review_button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/review_button_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/review_button_discard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="discard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/review_button_save"
+        app:layout_constraintStart_toEndOf="@+id/review_button_back" />
+</androidx.constraintlayout.widget.ConstraintLayout>

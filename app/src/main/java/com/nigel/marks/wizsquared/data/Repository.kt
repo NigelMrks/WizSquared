@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nigel.marks.wizsquared.data.db.SpellDatabase
+import com.nigel.marks.wizsquared.data.entities.PlayerCharacter
 import com.nigel.marks.wizsquared.data.entities.Spell
 import com.nigel.marks.wizsquared.data.model.EqOptionsList
 import com.nigel.marks.wizsquared.data.model.Equipment
@@ -19,6 +20,9 @@ import kotlin.concurrent.thread
 class Repository (private val database: SpellDatabase, private val spellApi: SpellAPI){
     //Spell List
     var spellList: LiveData<List<Spell>> = database.spellDao.getAll()
+
+    //Character List (Temporary?)
+    var characterList: MutableList<PlayerCharacter> = mutableListOf()
 
     //List of Alignments as Strings
     private val alignments: List<String> = listOf(
